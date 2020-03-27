@@ -4,6 +4,8 @@ import org.launchcode.recipestorage.models.User;
 import org.launchcode.recipestorage.models.data.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
@@ -24,5 +26,15 @@ public class AuthenticationController {
 
         Optional<User> user = userRepository.findById(userId);
         return user.get();
+    }
+
+    private static void setUserInSession(HttpSession session, User user) {
+        session.setAttribute(userSessionKey, user.getId());
+    }
+
+    @GetMapping("/register")
+    public String dislplayRegistration (Model model) {
+        model.addAttribute("title", "Register");
+        model.addAttribute()
     }
 }

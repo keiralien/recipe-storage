@@ -24,6 +24,10 @@ public class User {
 
     public User() {}
 
+    public int getId() {
+        return id;
+    }
+
     public User(String username, String password) {
         this.username = username;
         this.pwHash = encoder.encode(password);
