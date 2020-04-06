@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head th:fragments="head">
+<head th:fragment="head">
     <meta charset="UTF-8"/>
 
     <link th:href="@{/css/recipe-storage.css}" rel="stylesheet" />
 <!--    <script type="text/javascript" th:src="@{/js/bootstrap.js}"></script>-->
 
-    <title th:text="'Recipe' + ${title == null ? '' : ' :: ' + title}"></title>
+    <title th:text="'Recipe: ' + ${title == null ? '' : ' :: ' + title}"></title>
 
 </head>
 <body>
+
+<div th:fragment="navigation">
+    <h1 th:text="${title} + '\'s Recipes'"></h1>
+    <nav>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/add}">Add Recipe</a>
+        <a th:href="@{/search}">Search Recipes</a>
+        <a th:href="@{/account}">My Account</a>
+        <a th:href="@{/logout}">Logout</a>
+    </nav>
+</div>
 
 </body>
 </html>
