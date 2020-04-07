@@ -14,10 +14,14 @@
         <input th:field="${recipe.description}"/>
         <span th:errors="${recipe.description}"></span>
     </label>
+    <label th:for="categories">Category
+        <th:block th:each="category : ${categories}">
+            <input type="checkbox" name="categories" th:value="${category.id}">
+            <label th:text="${category.name}"></label>
+        </th:block>
+        <span th:errors="${recipe.categories}"></span>
+    </label>
 
-    <div>
-        <label>Categories</label>
-    </div>
     <input type="submit" value="Create Recipe"/>
 </form>
 

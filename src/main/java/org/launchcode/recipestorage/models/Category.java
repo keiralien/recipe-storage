@@ -10,16 +10,9 @@ import java.util.List;
 @Entity
 public class Category extends AbstractEntity{
 
-    @Id
-    @GeneratedValue
-    private int id;
-
     @ManyToMany(mappedBy = "categories")
     private List<Recipe> recipes = new ArrayList<>();
 
     public Category () {}
 
-    public int getId() {
-        return id;
-    }
 }

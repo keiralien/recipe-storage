@@ -9,10 +9,6 @@ import java.util.List;
 @Entity
 public class Recipe extends AbstractEntity{
 
-    @Id
-    @GeneratedValue
-    private int id;
-
     @Size(max = 250, message = "Description must be less than 250 characters.")
     private String description;
 
@@ -29,15 +25,19 @@ public class Recipe extends AbstractEntity{
         this.description = description;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }

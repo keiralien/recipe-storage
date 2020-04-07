@@ -2,6 +2,7 @@ package org.launchcode.recipestorage.controllers;
 
 import org.launchcode.recipestorage.models.Category;
 import org.launchcode.recipestorage.models.Recipe;
+import org.launchcode.recipestorage.models.data.CategoryRepository;
 import org.launchcode.recipestorage.models.data.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,29 +16,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping
-public class AddController {
+@RequestMapping("recipe")
+public class RecipeController {
 
     @Autowired
     private RecipeRepository recipeRepository;
 
-    @GetMapping("Add")
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @GetMapping("/add")
     public String displayAddRecipe(Model model) {
         model.addAttribute("title", "Add Recipe");
+        model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute(new Recipe());
-        return "add";
+        return "recipe/add";
     }
 
-    @PostMapping("Add")
+    @PostMapping("/add")
     public String processAddRecipe(@ModelAttribute @Valid Recipe newRecipe, Errors errors, Model model) {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Recipe");
             model.addAttribute(new Recipe());
-            return "add";
+            return "redirect:";
         }
 
-
+        recipeRepository.save(newRecipe);
         return "redirect:";
     }
 
