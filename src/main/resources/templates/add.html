@@ -6,11 +6,19 @@
 <div th:replace="fragments :: navigation"></div>
 
 <form method="post">
-    <div class="">
-        <label>Name
-            <input th:field="${"
-        </label>
+    <label>Name
+        <input th:field="${recipe.name}"/>
+        <span th:errors="${recipe.name}"></span>
+    </label>
+    <label>Description
+        <input th:field="${recipe.description}"/>
+        <span th:errors="${recipe.description}"></span>
+    </label>
+
+    <div>
+        <label>Categories</label>
     </div>
+    <input type="submit" value="Create Recipe"/>
 </form>
 
 </body>
