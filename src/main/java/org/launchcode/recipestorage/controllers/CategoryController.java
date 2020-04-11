@@ -38,4 +38,11 @@ public class CategoryController {
         categoryRepository.save(newCategory);
         return "category";
     }
+
+    @GetMapping("/browse")
+    public String recipeBrowse (Model model) {
+        model.addAttribute("categories", categoryRepository.findAll());
+        return "category/browse";
+    }
+
 }

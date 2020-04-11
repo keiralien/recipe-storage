@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body>
+
+<div th:replace="fragments :: navigation"></div>
+
+<p th:text="${recipe.name}"></p>
+<p th:text="${recipe.description}"></p>
+<p th:text="${recipe.categories}"></p>
+<p th:text="${recipe.ingredients}"></p>
+<p th:text="${recipe.directions}"></p>
+
+</body>
+</html>

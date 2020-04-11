@@ -5,7 +5,11 @@
 
 <div th:replace="fragments :: navigation"></div>
 
-
+<ul th:each="recipe : ${recipes}">
+    <li>
+        <a th:href="@{'/recipe/view/' + ${recipe.id}}" th:text="${recipe.name}"></a>
+    </li>
+</ul>
 
 </body>
 </html>

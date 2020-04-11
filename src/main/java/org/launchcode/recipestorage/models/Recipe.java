@@ -43,4 +43,20 @@ public class Recipe extends AbstractEntity{
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public List<Directions> getDirections() {
+        return directions;
+    }
+
+    public void setDirections(List<Directions> directions) {
+        this.directions = directions;
+    }
 }

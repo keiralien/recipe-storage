@@ -75,4 +75,21 @@ public class RecipeController {
         return "/";
     }
 
+    @GetMapping("/browse")
+    public String recipeBrowse (Model model) {
+        model.addAttribute("recipes", recipeRepository.findAll());
+        return "recipe/browse";
+    }
+
+    @GetMapping("/view/{recipeId}")
+    public String recipeView (Model model, @PathVariable int recipeId) {
+        Optional<Recipe> optRecipe = recipeRepository.findById(recipeId);
+        if (optRecipe.isPresent()) {
+            Recipe recipe = (Recipe) optRecipe.get();
+            model.addAttribute("recipe", recipe);
+            return "recipe/view";
+        } else {
+            return "redirect:../";
+        }
+    }
 }
