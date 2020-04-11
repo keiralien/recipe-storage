@@ -32,6 +32,11 @@ public class AuthenticationController {
         }
 
         Optional<User> user = userRepository.findById(userId);
+
+        if (user.isEmpty()) {
+            return null;
+        }
+
         return user.get();
     }
 
@@ -96,6 +101,14 @@ public class AuthenticationController {
 
         if(user == null) {
             errors.rejectValue("username", "user.invalid", "Username does not exist.");
+            model.addAttribute("title", "Log In");
+            return "login";
+        }
+
+        String password = loginFormDTO.getPassword();
+
+        if (!user.isMatchingPassword(password)) {
+            errors.rejectValue("password", "password.invalid", "Invalid password");
             model.addAttribute("title", "Log In");
             return "login";
         }
