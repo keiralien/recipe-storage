@@ -6,41 +6,51 @@
 <div th:replace="fragments :: navigation"></div>
 
 <form method="post">
-    <label>Name
+
+    <!--    BASE RECIPE-->
+    <label th:for="recipe">Name
         <input th:field="${recipe.name}"/>
-        <span th:errors="${recipe.name}"></span>
     </label>
+    <span th:errors="${recipe.name}"></span>
+
     <label>Description
         <input th:field="${recipe.description}"/>
-        <span th:errors="${recipe.description}"></span>
     </label>
+    <span th:errors="${recipe.description}"></span>
+
     <label th:for="categories">Category
         <th:block th:each="category : ${categories}">
             <input type="checkbox" name="categories" th:value="${category.id}">
             <label th:text="${category.name}"></label>
         </th:block>
-        <span th:errors="${recipe.categories}"></span>
     </label>
+    <span th:errors="${recipe.categories}"></span>
+
+<!--    INGREDIENTS-->
+    <label th:for="ingredient">Ingredient
+        <input th:field="${ingredient.name}"/>
+    </label>
+    <span th:errors="${ingredient.name}"></span>
+
     <label>Amount
         <input th:field="${ingredient.amount}"/>
-        <span th:errors="${ingredient.amount}"></span>
     </label>
+    <span th:errors="${ingredient.amount}"></span>
+
     <label th:for="units">Unit
         <select name="unitId">
             <option th:each="unit : ${units}"
                     th:text="${unit.abbreviation}"
                     th:value="${unit.id}"></option>
         </select>
-        <span th:errors="${unit.name}"></span>
     </label>
-    <label>Ingredient
-        <input th:field="${ingredient.name}"/>
-        <span th:errors="${ingredient.name}"></span>
-    </label>
+<!--    <span th:errors="${unit.abbreviation}"></span>-->
+
+<!--    DIRECTIONS-->
     <label>Directions
         <input th:field="${directions.instruction}"/>
-        <span th:errors="${directions.instruction}"></span>
     </label>
+    <span th:errors="${directions.instruction}"></span>
 
     <input type="submit" value="Create Recipe"/>
 </form>

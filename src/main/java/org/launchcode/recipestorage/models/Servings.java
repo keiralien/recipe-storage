@@ -11,4 +11,6 @@ public class Servings {
     @GeneratedValue
     private int id;
 
+
+
 }

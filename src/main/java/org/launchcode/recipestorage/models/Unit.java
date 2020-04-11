@@ -1,22 +1,23 @@
 package org.launchcode.recipestorage.models;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.validation.constraints.NotBlank;
 
 @Entity
-public class Unit extends AbstractEntity {
+public class Unit extends AbstractEntity{
 
+    @NotBlank(message = "Select a unit.")
     private String abbreviation;
 
-    @ManyToMany(mappedBy = "units")
-    private List<Ingredient> ingredients = new ArrayList<>();
+    @OneToOne
+    @PrimaryKeyJoinColumn
+    private Ingredient ingredient;
 
     public Unit () {}
 
-    public Unit (String abbreviation) {
+    public Unit (String name, String abbreviation) {
         this.abbreviation = abbreviation;
     }
 

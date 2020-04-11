@@ -1,20 +1,16 @@
 package org.launchcode.recipestorage.controllers;
 
-import org.launchcode.recipestorage.models.Directions;
-import org.launchcode.recipestorage.models.Ingredient;
-import org.launchcode.recipestorage.models.Recipe;
-import org.launchcode.recipestorage.models.Unit;
+import org.launchcode.recipestorage.models.*;
 import org.launchcode.recipestorage.models.data.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("recipe")
@@ -48,8 +44,8 @@ public class RecipeController {
 
     @PostMapping("/add")
     public String processAddRecipe(@ModelAttribute @Valid Recipe newRecipe, @ModelAttribute Directions newDirections,
-                                   @ModelAttribute Ingredient newIngredient, @ModelAttribute Unit newUnit,
-                                   Errors errors, Model model) {
+                                   @ModelAttribute Ingredient newIngredient, @RequestParam List<Integer> categories,
+                                   @RequestParam Integer unitId, Errors errors, Model model) {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Recipe");
@@ -61,10 +57,22 @@ public class RecipeController {
             return "recipe/add";
         }
 
+//        Optional<Employer> empVar = employerRepository.findById(employerId);
+//        Employer employer = empVar.get();
+//        newJob.setEmployer(employer);
+
+        List<Category> categoryObj = (List<Category>) categoryRepository.findAllById(categories);
+        newRecipe.setCategories(categoryObj);
+
+        Optional<Unit> unitObj = unitRepository.findById(unitId);
+        Unit unit = unitObj.get();
+        newIngredient.setUnit(unit);
+
         recipeRepository.save(newRecipe);
-        directionsRepository.save(newDirections);
         ingredientRepository.save(newIngredient);
-        return "redirect:";
+        directionsRepository.save(newDirections);
+
+        return "/";
     }
 
 }
