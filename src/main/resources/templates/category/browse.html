@@ -5,6 +5,8 @@
 
 <div th:replace="fragments :: navigation"></div>
 
+<a th:href="@{'/category/add'}">Add Custom Category</a>
+
 <ul th:each="category : ${categories}">
     <li>
         <a th:href="@{'/category/view/' + ${category.id}}" th:text="${category.name}"></a>

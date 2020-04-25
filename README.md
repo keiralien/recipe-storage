@@ -1,0 +1,1 @@
+This will be an app that allows users to create an account, then enter and search for recipes they want to track. Users can track by category, ingredients, directions, serving sizes, etc.
