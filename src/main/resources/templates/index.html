@@ -5,11 +5,17 @@
 
 <div th:replace="fragments :: navigation"></div>
 
-<form>
-    <label>Search</label>
-    <input type="text" name="search"/>
-    <input type="submit" value="searchTerm"/>
+<form method="post">
+    <label for="searchTerm">Search</label>
+    <input type="text" name="searchTerm" id="searchTerm"/>
+    <input type="submit" value="Search" />
 </form>
+
+<ul th:each="recipe : ${recipes}">
+    <li>
+        <a th:href="@{'/recipe/view/' + ${recipe.id}}" th:text="${recipe.name}"></a>
+    </li>
+</ul>
 
 </body>
 </html>

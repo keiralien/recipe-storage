@@ -1,23 +1,21 @@
 package org.launchcode.recipestorage.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class Directions {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne
+    @JoinColumn(name="recipe.id")
     private Recipe recipe;
 
     private String instruction;
 
-    public Directions () {}
+    public Directions() {}
 
     public Directions (Recipe recipe, String instruction) {
         this.recipe = recipe;

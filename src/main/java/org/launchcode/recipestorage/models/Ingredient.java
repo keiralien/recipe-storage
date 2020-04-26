@@ -1,6 +1,7 @@
 package org.launchcode.recipestorage.models;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.DecimalMin;
@@ -17,6 +18,7 @@ public class Ingredient extends AbstractEntity {
     private Unit unit;
 
     @ManyToOne
+    @JoinColumn(name="recipe.id")
     private Recipe recipe;
 
     public Ingredient() {}

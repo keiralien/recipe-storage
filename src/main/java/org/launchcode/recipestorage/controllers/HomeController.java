@@ -27,7 +27,8 @@ public class HomeController {
     public String processSearch(Model model, @RequestParam String searchTerm) {
         Iterable<Recipe> recipes;
         recipes = Search.findValue(recipeRepository.findAll(), searchTerm);
-        model.
+//        model.addAttribute("title", loginFormDTO.getUsername());
+        model.addAttribute("recipes", recipes);
         return "index";
     }
 

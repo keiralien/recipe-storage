@@ -5,11 +5,21 @@
 
 <div th:replace="fragments :: navigation"></div>
 
+<a th:href="@{/recipe/edit}">Edit Recipe</a>
+
 <p th:text="${recipe.name}"></p>
 <p th:text="${recipe.description}"></p>
-<p th:text="${recipe.categories}"></p>
-<p th:text="${recipe.ingredients}"></p>
-<p th:text="${recipe.directions}"></p>
+<div th:each="category : ${recipe.categories}">
+   <p th:text="${category.name}"></p>
+</div>
+<div th:each="ingredient : ${recipe.ingredients}">
+    <p th:text="${ingredient.name}"></p>
+    <p th:text="${ingredient.unit}"></p>
+    <p th:text="${ingredient.unit.abbreviation}"></p>
+</div>
+<div th:each="direction : ${recipe.directions}">
+    <p th:text="${direction.instruction}"></p>
+</div>
 
 </body>
 </html>

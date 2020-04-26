@@ -2,6 +2,7 @@ package org.launchcode.recipestorage.controllers;
 
 import org.launchcode.recipestorage.models.*;
 import org.launchcode.recipestorage.models.data.*;
+import org.launchcode.recipestorage.models.dto.DirectionsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,9 +34,13 @@ public class RecipeController {
 
     @GetMapping("/add")
     public String displayAddRecipe(Model model) {
+//        DirectionsDTO directionsList = new DirectionsDTO();
+//        directionsList.addDirections(new Directions());
+
         model.addAttribute("title", "Add Recipe");
         model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute("units", unitRepository.findAll());
+//        model.addAttribute("directions", directionsList);
         model.addAttribute(new Recipe());
         model.addAttribute(new Directions());
         model.addAttribute(new Ingredient());
@@ -43,23 +48,23 @@ public class RecipeController {
     }
 
     @PostMapping("/add")
-    public String processAddRecipe(@ModelAttribute @Valid Recipe newRecipe, @ModelAttribute Directions newDirections,
-                                   @ModelAttribute Ingredient newIngredient, @RequestParam List<Integer> categories,
-                                   @RequestParam Integer unitId, Errors errors, Model model) {
+    public String processAddRecipe(@ModelAttribute @Valid Recipe newRecipe,
+//                                   @ModelAttribute("Directions") DirectionsDTO directionsList,
+                                   @ModelAttribute @Valid Directions newDirections,
+                                   @ModelAttribute @Valid Ingredient newIngredient,
+                                   @RequestParam List<Integer> categories,
+                                   Integer unitId, Errors errors, Model model) {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Recipe");
             model.addAttribute("categories", categoryRepository.findAll());
             model.addAttribute("units", unitRepository.findAll());
+//            model.addAttribute("directions", directionsList);
             model.addAttribute(new Recipe());
             model.addAttribute(new Directions());
             model.addAttribute(new Ingredient());
-            return "recipe/add";
+            return "/recipe/add";
         }
-
-//        Optional<Employer> empVar = employerRepository.findById(employerId);
-//        Employer employer = empVar.get();
-//        newJob.setEmployer(employer);
 
         List<Category> categoryObj = (List<Category>) categoryRepository.findAllById(categories);
         newRecipe.setCategories(categoryObj);
@@ -69,10 +74,38 @@ public class RecipeController {
         newIngredient.setUnit(unit);
 
         recipeRepository.save(newRecipe);
-        ingredientRepository.save(newIngredient);
+
+        Optional<Recipe> recObj = recipeRepository.findById(newRecipe.getId());
+        Recipe recipe = recObj.get();
+
+        newDirections.setRecipe(recipe);
         directionsRepository.save(newDirections);
 
-        return "/";
+        newIngredient.setRecipe(recipe);
+        ingredientRepository.save(newIngredient);
+//
+//        for (Ingredient ingredient : ingredientList) {
+//
+//            Optional<Unit> unitObj = unitRepository.findById(unitId);
+//            Unit unit = unitObj.get();
+//            ingredient.setUnit(unit);
+//
+//            Optional<Recipe> recObj = recipeRepository.findById(newRecipe.getId());
+//            Recipe recipe = recObj.get();
+//            ingredient.setRecipe(recipe);
+//
+//            ingredientRepository.save(ingredient);
+//        }
+//
+//        for (Directions direction : directionsList.getDirectionsList()) {
+//            Optional<Recipe> recObj = recipeRepository.findById(newRecipe.getId());
+//            Recipe recipe = recObj.get();
+//            direction.setRecipe(recipe);
+//
+//            directionsRepository.save(direction);
+//        }
+
+        return "recipe/browse";
     }
 
     @GetMapping("/browse")
