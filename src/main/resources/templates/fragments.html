@@ -7,12 +7,11 @@
 <!--    <script type="text/javascript" th:src="@{/js/bootstrap.js}"></script>-->
 
     <title th:text="'My Recipe Book: ' + ${title}"></title>
-
 </head>
 <body>
 
-<!--<div th:if="${session} == null">-->
-    <div th:fragment="navigation">
+<div th:fragment="navigation">
+    <div th:if="${session} == null">
         <h1 th:text="${title}"></h1>
         <nav>
             <a th:href="@{/}">Home</a>
@@ -22,10 +21,7 @@
             <a th:href="@{/logout}">Log In</a>
         </nav>
     </div>
-<!--</div>-->
-
-<!--<div th:if="${session} != null">-->
-<!--    <div th:fragment="navigation">-->
+<!--    <div th:if="${session} != null">-->
 <!--        <h1 th:text="${title}"></h1>-->
 <!--        <nav>-->
 <!--            <a th:href="@{/}">Home</a>-->
@@ -35,7 +31,7 @@
 <!--            <a th:href="@{/logout}">Logout</a>-->
 <!--        </nav>-->
 <!--    </div>-->
-<!--</div>-->
+</div>
 
 </body>
 </html>
