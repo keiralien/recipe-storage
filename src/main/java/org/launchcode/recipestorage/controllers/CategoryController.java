@@ -2,6 +2,7 @@ package org.launchcode.recipestorage.controllers;
 
 import org.launchcode.recipestorage.models.Category;
 import org.launchcode.recipestorage.models.data.CategoryRepository;
+import org.launchcode.recipestorage.models.dto.LoginFormDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,7 +41,8 @@ public class CategoryController {
     }
 
     @GetMapping("/browse")
-    public String recipeBrowse (Model model) {
+    public String recipeBrowse (LoginFormDTO loginFormDTO, Model model) {
+        model.addAttribute("user", loginFormDTO.getUsername());
         model.addAttribute("categories", categoryRepository.findAll());
         return "category/browse";
     }
