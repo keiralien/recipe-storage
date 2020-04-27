@@ -26,8 +26,9 @@ public class HomeController {
 
     @PostMapping
     public String processSearch(Model model, @RequestParam String searchTerm) {
+        model.addAttribute("title", "Home");
         Iterable<Recipe> recipes;
-        recipes = Search.findValue(recipeRepository.findAll(), searchTerm);
+        recipes = Search.findByValue(recipeRepository.findAll(), searchTerm);
         model.addAttribute("recipes", recipes);
         return "index";
     }
