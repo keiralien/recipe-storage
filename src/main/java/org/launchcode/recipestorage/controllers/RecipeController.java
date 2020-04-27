@@ -120,6 +120,7 @@ public class RecipeController {
         if (optRecipe.isPresent()) {
             Recipe recipe = (Recipe) optRecipe.get();
             model.addAttribute("recipe", recipe);
+            model.addAttribute("title",recipe.getName());
             return "recipe/view";
         } else {
             return "redirect:../";

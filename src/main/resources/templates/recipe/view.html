@@ -7,19 +7,23 @@
 
 <a th:href="@{/recipe/edit}">Edit Recipe</a>
 
-<p th:text="${recipe.name}"></p>
 <p th:text="${recipe.description}"></p>
+<h3>Categories:</h3>
 <div th:each="category : ${recipe.categories}">
    <p th:text="${category.name}"></p>
 </div>
-<div th:each="ingredient : ${recipe.ingredients}">
-    <p th:text="${ingredient.name}"></p>
-    <p th:text="${ingredient.unit}"></p>
-    <p th:text="${ingredient.unit.abbreviation}"></p>
-</div>
-<div th:each="direction : ${recipe.directions}">
-    <p th:text="${direction.instruction}"></p>
-</div>
+<h3>Ingredients:</h3>
+<p th:each="ingredient : ${recipe.ingredients}">
+        <span th:text="${ingredient.name}"></span>
+        <span th:text="${ingredient.amount}"></span>
+        <span th:text="${ingredient.unit.abbreviation}"></span>
+</p>
+<h3>Directions:</h3>
+<ol th:each="direction : ${recipe.directions}">
+    <li th:text="${direction.instruction}"></li>
+</ol>
+
+<h3>Servings:</h3>
 
 </body>
 </html>
