@@ -110,6 +110,7 @@ public class RecipeController {
 
     @GetMapping("/browse")
     public String recipeBrowse (Model model) {
+        model.addAttribute("title", "Browse Recipes");
         model.addAttribute("recipes", recipeRepository.findAll());
         return "recipe/browse";
     }
