@@ -11,7 +11,7 @@
 <body>
 
 <div th:fragment="navigation">
-    <div th:if="${session} == null">
+<!--    <div th:if="${session} == null">-->
         <h1 th:text="${title}"></h1>
         <nav>
             <a th:href="@{/}">Home</a>
@@ -20,7 +20,7 @@
             <a th:href="@{/category/add}">Add Category</a>
             <a th:href="@{/logout}">Log In</a>
         </nav>
-    </div>
+<!--    </div>-->
 <!--    <div th:if="${session} != null">-->
 <!--        <h1 th:text="${title}"></h1>-->
 <!--        <nav>-->

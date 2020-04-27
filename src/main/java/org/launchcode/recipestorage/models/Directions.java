@@ -37,4 +37,18 @@ public class Directions {
     public void setInstruction(String instruction) {
         this.instruction = instruction;
     }
+
+    @Override
+    public String toString() {
+        return instruction;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Directions that = (Directions) o;
+        return instruction == that.instruction;
+    }
+
 }

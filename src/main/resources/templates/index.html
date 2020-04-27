@@ -5,12 +5,22 @@
 
 <div th:replace="fragments :: navigation"></div>
 
+<!--SEARCH FORM-->
 <form method="post">
     <label for="searchTerm">Search</label>
     <input type="text" name="searchTerm" id="searchTerm"/>
+    <p th:each="field : ${fieldTypes}">
+        <input type="radio"
+               name="fieldType"
+               th:id="${field.key}"
+               th:value="${field.key}"
+               th:checked="${field.key == 'all'}"/>
+        <label th:for="${field.key}" th:text="${field.value}"></label>
+    </p>
     <input type="submit" value="Search" />
 </form>
 
+<!--SEARCH RESULTS-->
 <ul th:each="recipe : ${recipes}">
     <li>
         <a th:href="@{'/recipe/view/' + ${recipe.id}}" th:text="${recipe.name}"></a>
