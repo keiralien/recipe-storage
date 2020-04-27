@@ -5,7 +5,7 @@
 
 <div th:replace="fragments :: navigation"></div>
 
-<a th:href="@{/recipe/edit}">Edit Recipe</a>
+<a th:href="@{'/recipe/edit/' + ${recipe.id}}">Edit Recipe</a>
 
 <p th:text="${recipe.description}"></p>
 <h3>Categories:</h3>

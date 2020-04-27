@@ -109,14 +109,14 @@ public class RecipeController {
     }
 
     @GetMapping("/browse")
-    public String recipeBrowse (Model model) {
+    public String displayRecipeBrowse (Model model) {
         model.addAttribute("title", "Browse Recipes");
         model.addAttribute("recipes", recipeRepository.findAll());
         return "recipe/browse";
     }
 
     @GetMapping("/view/{recipeId}")
-    public String recipeView (Model model, @PathVariable int recipeId) {
+    public String displayRecipeView (Model model, @PathVariable int recipeId) {
         Optional<Recipe> optRecipe = recipeRepository.findById(recipeId);
         if (optRecipe.isPresent()) {
             Recipe recipe = (Recipe) optRecipe.get();
@@ -126,5 +126,23 @@ public class RecipeController {
         } else {
             return "redirect:../";
         }
+    }
+
+    @GetMapping("/edit/{recipeId}")
+    public String displayRecipeEdit (Model model, @PathVariable int recipeId) {
+        Optional<Recipe> optRecipe = recipeRepository.findById(recipeId);
+        if (optRecipe.isPresent()) {
+            Recipe recipe = (Recipe) optRecipe.get();
+            model.addAttribute("recipe", recipe);
+            model.addAttribute("title", "Edit " + recipe.getName());
+            return "recipe/edit";
+        } else{
+            return "redirect:../";
+        }
+    }
+
+    @PostMapping("/edit/{recipeId}")
+    public String processRecipeEdit () {
+        return "/recipe/browse";
     }
 }
