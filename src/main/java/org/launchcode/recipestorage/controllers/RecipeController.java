@@ -52,6 +52,7 @@ public class RecipeController {
 //                                   @ModelAttribute("Directions") DirectionsDTO directionsList,
                                    @ModelAttribute @Valid Directions newDirections,
                                    @ModelAttribute @Valid Ingredient newIngredient,
+                                   @RequestParam String recName,
                                    @RequestParam List<Integer> categories,
                                    Integer unitId, Errors errors, Model model) {
 
@@ -69,11 +70,12 @@ public class RecipeController {
         List<Category> categoryObj = (List<Category>) categoryRepository.findAllById(categories);
         newRecipe.setCategories(categoryObj);
 
+        newRecipe.setName(recName);
+        recipeRepository.save(newRecipe);
+
         Optional<Unit> unitObj = unitRepository.findById(unitId);
         Unit unit = unitObj.get();
         newIngredient.setUnit(unit);
-
-        recipeRepository.save(newRecipe);
 
         Optional<Recipe> recObj = recipeRepository.findById(newRecipe.getId());
         Recipe recipe = recObj.get();
@@ -147,7 +149,23 @@ public class RecipeController {
     public String processRecipeEdit (@ModelAttribute @Valid Recipe recipe,
                                      @ModelAttribute @Valid Ingredient ingredient,
                                      @ModelAttribute @Valid Directions directions,
-                                     Model mode, Error errors) {
+                                     Model model, Errors errors) {
+
+        if (errors.hasErrors()) {
+            model.addAttribute("title", "Edit " + recipe.getName());
+            model.addAttribute("categories", categoryRepository.findAll());
+            model.addAttribute("units", unitRepository.findAll());
+//            model.addAttribute("directions", directionsList);
+            model.addAttribute(new Recipe());
+            model.addAttribute(new Directions());
+            model.addAttribute(new Ingredient());
+            return "/recipe/add";
+        }
+
+        recipeRepository.save(recipe);
+
+        model.addAttribute("title", "Browse Recipes");
+        model.addAttribute("recipes", recipeRepository.findAll());
         return "/recipe/browse";
     }
 }

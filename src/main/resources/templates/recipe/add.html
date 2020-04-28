@@ -9,8 +9,8 @@
 
     <!--    BASE RECIPE INFO-->
     <fieldset>
-        <label th:for="recipe">Name
-            <input th:field="${recipe.name}"/>
+        <label>Name
+            <input type="text" name="recName"/>
         </label>
         <span th:errors="${recipe.name}"></span>
 
@@ -33,7 +33,7 @@
 
 <!--    INGREDIENTS-->
     <fieldset>
-        <label th:for="ingredient">Ingredient
+        <label>Ingredient
             <input th:field="${ingredient.name}"/>
         </label>
         <span th:errors="${ingredient.name}"></span>
