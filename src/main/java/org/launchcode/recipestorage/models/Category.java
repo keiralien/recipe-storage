@@ -13,4 +13,11 @@ public class Category extends AbstractEntity{
 
     public Category () {}
 
+    public List<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(List<Recipe> recipes) {
+        this.recipes = recipes;
+    }
 }

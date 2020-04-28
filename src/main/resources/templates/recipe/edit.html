@@ -5,9 +5,72 @@
 
 <div th:replace="fragments :: navigation"></div>
 
+<form method="post">
+<!--    BASE RECIPE INFO-->
 <fieldset>
-    <label>Recipe Name</label>
+    <label>Name
+        <input th:field="${recipe.name}" th:value="${recipe.name}"/>
+    </label>
+    <span th:errors="${recipe.name}"></span>
 
+    <label>Description
+        <input th:field="${recipe.description}" th:value="${recipe.description}"/>
+    </label>
+    <span th:errors="${recipe.description}"></span>
+
+    <input type="hidden" th:value="${recipe.id}" name="recipeId"/>
 </fieldset>
+
+<!--    CATEGORIES-->
+<fieldset>
+    <label>Category
+        <th:block th:each="category : ${categories}">
+            <input type="checkbox"
+                   name="categories"
+                   th:value="${category.id}"
+                   th:checked="${recipe.categories}">
+            <label th:text="${category.name}"></label>
+        </th:block>
+    </label>
+    <span th:errors="${recipe.categories}"></span>
+</fieldset>
+
+
+<!--&lt;!&ndash;    INGREDIENTS&ndash;&gt;-->
+<!--<fieldset>-->
+<!--    <label th:each="ingredient : ${recipe.ingredients}">Ingredient-->
+<!--        <input th:field="${recipe.ingredients}" th:value="${ingredient.name}"/>-->
+<!--    </label>-->
+<!--&lt;!&ndash;    <span th:errors="${ingredient.name}"></span>&ndash;&gt;-->
+
+<!--    <label>Amount-->
+<!--        <input th:field="${recipe.ingredients}" th:value="${ingredient.amount}"/>-->
+<!--    </label>-->
+<!--&lt;!&ndash;    <span th:errors="${ingredient.amount}"></span>&ndash;&gt;-->
+
+<!--    <label>Unit-->
+<!--        <select name="unitId">-->
+<!--            <option th:each="unit : ${units}"-->
+<!--                    th:text="${unit.abbreviation}"-->
+<!--                    th:value="${unit.id}"-->
+<!--                    th:selected="${ingredient.unit.id}"></option>-->
+<!--        </select>-->
+<!--    </label>-->
+<!--</fieldset>-->
+<!--&lt;!&ndash;    <span th:errors="${unit.abbreviation}"></span>&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;    DIRECTIONS&ndash;&gt;-->
+<!--<fieldset>-->
+<!--    <label th:each="direction : ${recipe.directions}">Directions-->
+<!--        <input th:field="${direction.instruction}"/>-->
+<!--    </label>-->
+<!--    <span th:errors="${direction.instruction}"></span>-->
+
+<!--    <input type="submit" value="Create Recipe"/>-->
+<!--</fieldset>-->
+
+</form>
+
 </body>
 </html>

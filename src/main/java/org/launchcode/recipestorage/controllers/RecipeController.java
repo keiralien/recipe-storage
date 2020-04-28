@@ -130,6 +130,8 @@ public class RecipeController {
 
     @GetMapping("/edit/{recipeId}")
     public String displayRecipeEdit (Model model, @PathVariable int recipeId) {
+        model.addAttribute("categories", categoryRepository.findAll());
+        model.addAttribute("units", unitRepository.findAll());
         Optional<Recipe> optRecipe = recipeRepository.findById(recipeId);
         if (optRecipe.isPresent()) {
             Recipe recipe = (Recipe) optRecipe.get();
@@ -142,7 +144,10 @@ public class RecipeController {
     }
 
     @PostMapping("/edit/{recipeId}")
-    public String processRecipeEdit () {
+    public String processRecipeEdit (@ModelAttribute @Valid Recipe recipe,
+                                     @ModelAttribute @Valid Ingredient ingredient,
+                                     @ModelAttribute @Valid Directions directions,
+                                     Model mode, Error errors) {
         return "/recipe/browse";
     }
 }
