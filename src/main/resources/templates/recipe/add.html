@@ -9,7 +9,7 @@
 
     <!--    BASE RECIPE-->
     <fieldset>
-        <label th:for="recipe">Name
+        <label>Name
             <input th:field="${recipe.name}"/>
         </label>
         <span th:errors="${recipe.name}"></span>
@@ -33,7 +33,7 @@
 
 <!--    INGREDIENTS-->
     <fieldset>
-        <label th:for="ingredient">Ingredient
+        <label>Ingredient
             <input th:field="${ingredient.name}"/>
         </label>
         <span th:errors="${ingredient.name}"></span>
@@ -55,7 +55,7 @@
 
 <!--    DIRECTIONS-->
     <fieldset>
-        <label th:for="directions">Directions
+        <label>Directions
             <input th:field="${directions.instruction}"/>
         </label>
         <span th:errors="${directions.instruction}"></span>
