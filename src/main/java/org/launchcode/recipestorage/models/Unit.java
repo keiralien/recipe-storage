@@ -17,8 +17,9 @@ public class Unit extends AbstractEntity{
 
     public Unit () {}
 
-    public Unit (String name, String abbreviation) {
+    public Unit (String abbreviation, Ingredient ingredient) {
         this.abbreviation = abbreviation;
+        this.ingredient = ingredient;
     }
 
     public String getAbbreviation() {
@@ -27,5 +28,13 @@ public class Unit extends AbstractEntity{
 
     public void setAbbreviation(String abbreviation) {
         this.abbreviation = abbreviation;
+    }
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
     }
 }

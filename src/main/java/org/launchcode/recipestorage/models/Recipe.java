@@ -24,8 +24,11 @@ public class Recipe extends AbstractEntity{
 
     public Recipe() {}
 
-    public Recipe(String description, String directions) {
+    public Recipe(String description, List<Category> categories, List<Ingredient> ingredients, List<Directions> directions) {
         this.description = description;
+        this.categories = categories;
+        this.ingredients = ingredients;
+        this.directions = directions;
     }
 
     public String getDescription() {

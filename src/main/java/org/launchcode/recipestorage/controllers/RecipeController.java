@@ -107,14 +107,14 @@ public class RecipeController {
 //            directionsRepository.save(direction);
 //        }
 
-        return "recipe/browse";
+        return "/recipe/browse";
     }
 
     @GetMapping("/browse")
     public String displayRecipeBrowse (Model model) {
         model.addAttribute("title", "Browse Recipes");
         model.addAttribute("recipes", recipeRepository.findAll());
-        return "recipe/browse";
+        return "/recipe/browse";
     }
 
     @GetMapping("/view/{recipeId}")
@@ -134,38 +134,38 @@ public class RecipeController {
     public String displayRecipeEdit (Model model, @PathVariable int recipeId) {
         model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute("units", unitRepository.findAll());
+
         Optional<Recipe> optRecipe = recipeRepository.findById(recipeId);
+
         if (optRecipe.isPresent()) {
             Recipe recipe = (Recipe) optRecipe.get();
             model.addAttribute("recipe", recipe);
-            model.addAttribute("title", "Edit " + recipe.getName());
+            model.addAttribute("title", "Edit: " + recipe.getName());
+            model.addAttribute("directions", recipe.getDirections());
+            model.addAttribute("ingredients", recipe.getIngredients());
             return "recipe/edit";
         } else{
             return "redirect:../";
         }
     }
 
-    @PostMapping("/edit/{recipeId}")
+    @PostMapping("/edit/{eventId}")
     public String processRecipeEdit (@ModelAttribute @Valid Recipe recipe,
                                      @ModelAttribute @Valid Ingredient ingredient,
                                      @ModelAttribute @Valid Directions directions,
-                                     Model model, Errors errors) {
+                                     int eventId, Model model, Errors errors) {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Edit " + recipe.getName());
             model.addAttribute("categories", categoryRepository.findAll());
             model.addAttribute("units", unitRepository.findAll());
 //            model.addAttribute("directions", directionsList);
-            model.addAttribute(new Recipe());
-            model.addAttribute(new Directions());
-            model.addAttribute(new Ingredient());
             return "/recipe/add";
         }
 
+        Optional<Recipe> optRecipe = recipeRepository.findById(eventId);
         recipeRepository.save(recipe);
 
-        model.addAttribute("title", "Browse Recipes");
-        model.addAttribute("recipes", recipeRepository.findAll());
         return "/recipe/browse";
     }
 }

@@ -23,9 +23,10 @@ public class Ingredient extends AbstractEntity {
 
     public Ingredient() {}
 
-    public Ingredient(double amount, Unit unit) {
+    public Ingredient(double amount, Unit unit, Recipe recipe) {
         this.amount = amount;
         this.unit = unit;
+        this.recipe = recipe;
     }
 
     public double getAmount() {
