@@ -122,7 +122,7 @@ public class RecipeController {
         }
     }
 
-    @PostMapping("/edit/{eventId}")
+    @PostMapping("/edit/{recipeId}")
     public String processRecipeEdit (@ModelAttribute @Valid Recipe recipe,
                                      @ModelAttribute @Valid List<Ingredient> ingredients,
 //                                     @ModelAttribute @Valid List<Directions> directions,
