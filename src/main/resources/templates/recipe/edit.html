@@ -9,7 +9,7 @@
 <!--    BASE RECIPE INFO-->
 <fieldset>
     <label>Name</label>
-    <input th:field="${recipe.name}"/>
+    <input type="text" name="recName" th:value="${recipe.name}"/>
     <span th:errors="${recipe.name}"></span>
 
     <label>Description</label>
@@ -31,44 +31,39 @@
 </fieldset>
 
 
-<!--&lt;!&ndash;    INGREDIENTS&ndash;&gt;-->
-<!--<fieldset>-->
-<!--    <label th:each="ingredient : ${recipe.ingredients}">Ingredient-->
-<!--        <input th:field="${recipe.ingredients}" th:value="${ingredient.name}"/>-->
-<!--    </label>-->
-<!--&lt;!&ndash;    <span th:errors="${ingredient.name}"></span>&ndash;&gt;-->
-
-<!--    <label>Amount-->
-<!--        <input th:field="${recipe.ingredients}" th:value="${ingredient.amount}"/>-->
-<!--    </label>-->
-<!--&lt;!&ndash;    <span th:errors="${ingredient.amount}"></span>&ndash;&gt;-->
-
-<!--    <label>Unit-->
-<!--        <select name="unitId">-->
-<!--            <option th:each="unit : ${units}"-->
-<!--                    th:text="${unit.abbreviation}"-->
-<!--                    th:value="${unit.id}"-->
-<!--                    th:selected="${ingredient.unit.id}"></option>-->
-<!--        </select>-->
-<!--    </label>-->
-<!--</fieldset>-->
-<!--&lt;!&ndash;    <span th:errors="${unit.abbreviation}"></span>&ndash;&gt;-->
-
-
-<!--    DIRECTIONS-->
+<!--    INGREDIENTS-->
 <fieldset>
-    <label>Directions</label>
-    <ol th:each="direction : ${recipe.directions}">
-        <li><input th:value="${direction.instruction}"/></li>
-        <span th:errors="${directions}"></span>
-    </ol>
+    <label>Ingredient</label>
+    <th:block th:each="ingredient : ${ingredients}">
+        <input th:field="${ingredient.name}"/>
+<!--        <span th:errors="${ingredient.name}"></span>-->
+
+        <label>Amount</label>
+        <input th:field="${ingredient.amount}"/>
+<!--        <span th:errors="${ingredient.amount}"></span>-->
+
+        <label>Unit</label>
+            <select  name="unitId">
+                <option th:each="unit : ${units}"
+                        th:text="${unit.abbreviation}"
+                        th:value="${unit.id}"
+                        th:selected="${ingredient.unit.id}"></option>
+            </select>
+
+        <input type="hidden" th:value="${ingredient.id}" name="ingredientId"/>
+    </th:block>
 </fieldset>
 
-<!--    <ol th:each="direction : ${recipe.directions}">-->
-<!--        <li th:text="${direction.instruction}"></li>-->
+<!--    DIRECTIONS-->
+<!--<fieldset>-->
+<!--    <label>Directions</label>-->
+<!--    <ol th:each="direction : ${recipe.getDirections()}">-->
+<!--        <li><input th:field="${direction.instruction}"/></li>-->
+<!--&lt;!&ndash;        <span th:errors="${direction.instruction}"></span>&ndash;&gt;-->
 <!--    </ol>-->
+<!--</fieldset>-->
 
-<input type="hidden" th:field="${recipe.id}" name="eventId"/>
+<input type="hidden" th:value="${recipe.id}" name="eventId"/>
 
 <input type="submit" value="Save Changes"/>
 

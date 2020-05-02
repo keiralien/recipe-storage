@@ -34,13 +34,9 @@ public class RecipeController {
 
     @GetMapping("/add")
     public String displayAddRecipe(Model model) {
-//        DirectionsDTO directionsList = new DirectionsDTO();
-//        directionsList.addDirections(new Directions());
-
         model.addAttribute("title", "Add Recipe");
         model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute("units", unitRepository.findAll());
-//        model.addAttribute("directions", directionsList);
         model.addAttribute(new Recipe());
         model.addAttribute(new Directions());
         model.addAttribute(new Ingredient());
@@ -49,7 +45,6 @@ public class RecipeController {
 
     @PostMapping("/add")
     public String processAddRecipe(@ModelAttribute @Valid Recipe newRecipe,
-//                                   @ModelAttribute("Directions") DirectionsDTO directionsList,
                                    @ModelAttribute @Valid Directions newDirections,
                                    @ModelAttribute @Valid Ingredient newIngredient,
                                    @RequestParam String recName,
@@ -60,7 +55,6 @@ public class RecipeController {
             model.addAttribute("title", "Add Recipe");
             model.addAttribute("categories", categoryRepository.findAll());
             model.addAttribute("units", unitRepository.findAll());
-//            model.addAttribute("directions", directionsList);
             model.addAttribute(new Recipe());
             model.addAttribute(new Directions());
             model.addAttribute(new Ingredient());
@@ -85,27 +79,6 @@ public class RecipeController {
 
         newIngredient.setRecipe(recipe);
         ingredientRepository.save(newIngredient);
-//
-//        for (Ingredient ingredient : ingredientList) {
-//
-//            Optional<Unit> unitObj = unitRepository.findById(unitId);
-//            Unit unit = unitObj.get();
-//            ingredient.setUnit(unit);
-//
-//            Optional<Recipe> recObj = recipeRepository.findById(newRecipe.getId());
-//            Recipe recipe = recObj.get();
-//            ingredient.setRecipe(recipe);
-//
-//            ingredientRepository.save(ingredient);
-//        }
-//
-//        for (Directions direction : directionsList.getDirectionsList()) {
-//            Optional<Recipe> recObj = recipeRepository.findById(newRecipe.getId());
-//            Recipe recipe = recObj.get();
-//            direction.setRecipe(recipe);
-//
-//            directionsRepository.save(direction);
-//        }
 
         return "/recipe/browse";
     }
@@ -141,7 +114,7 @@ public class RecipeController {
             Recipe recipe = (Recipe) optRecipe.get();
             model.addAttribute("recipe", recipe);
             model.addAttribute("title", "Edit: " + recipe.getName());
-            model.addAttribute("directions", recipe.getDirections());
+//            model.addAttribute("directions", recipe.getDirections());
             model.addAttribute("ingredients", recipe.getIngredients());
             return "recipe/edit";
         } else{
@@ -151,21 +124,48 @@ public class RecipeController {
 
     @PostMapping("/edit/{eventId}")
     public String processRecipeEdit (@ModelAttribute @Valid Recipe recipe,
-                                     @ModelAttribute @Valid Ingredient ingredient,
-                                     @ModelAttribute @Valid Directions directions,
-                                     int eventId, Model model, Errors errors) {
+                                     @ModelAttribute @Valid List<Ingredient> ingredients,
+//                                     @ModelAttribute @Valid List<Directions> directions,
+                                     @RequestParam String recName,
+                                     @RequestParam int eventId, Model model, Errors errors) {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Edit " + recipe.getName());
             model.addAttribute("categories", categoryRepository.findAll());
             model.addAttribute("units", unitRepository.findAll());
-//            model.addAttribute("directions", directionsList);
-            return "/recipe/add";
+            return "/recipe/edit";
         }
-
         Optional<Recipe> optRecipe = recipeRepository.findById(eventId);
-        recipeRepository.save(recipe);
+        if (optRecipe.isPresent()) {
+            Recipe recipeHolder = optRecipe.get();
+
+            recipeHolder.setName(recName);
+            recipeHolder.setDescription(recipe.getDescription());
+            recipeHolder.setCategories(recipe.getCategories());
+            recipeHolder.setIngredients(ingredients);
+            recipeHolder.setDirections(recipe.getDirections());
+
+            recipeRepository.save(recipeHolder);
+        }
 
         return "/recipe/browse";
     }
+
+    @GetMapping("/delete")
+    public String displayDeleteRecipe (Model model) {
+        model.addAttribute("title", "Delete Recipes");
+        model.addAttribute("recipes", recipeRepository.findAll());
+        return "/delete";
+    }
+
+    @PostMapping("delete")
+    public String processDeleteRecipe(@RequestParam(required = false) int[] recipeIds) {
+        if(recipeIds != null) {
+            for (int id : recipeIds) {
+                recipeRepository.deleteById(id);
+            }
+        }
+        return "redirect:";
+    }
+
 }
