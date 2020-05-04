@@ -184,19 +184,25 @@ public class RecipeController {
         return "/recipe/delete";
     }
 
-//    @PostMapping("/delete")
-//    public String processDeleteRecipe(@RequestParam(required = false) int[] recipeIds) {
-//        if(recipeIds != null) {
-//            for (int id : recipeIds) {
-//                Optional<Recipe> recipe = recipeRepository.findById(id);
-//                int[] ingredientIds;
-//                recipe.ingredients.id
-//                for (int ingredientId : )
-//
-//                recipeRepository.deleteById(id);
-//            }
-//        }
-//        return "redirect:";
-//    }
+    @PostMapping("/delete")
+    public String processDeleteRecipe(@RequestParam(required = false) int[] recipeIds, Model model) {
+        if(recipeIds != null) {
+            for (int i = 0; i < recipeIds.length; i++) {
+                Optional<Recipe> origRecipe = recipeRepository.findById(recipeIds[i]);
+                Recipe recipe = origRecipe.get();
+
+                for (Ingredient ingredient : recipe.getIngredients()) {
+                    ingredientRepository.deleteById(ingredient.getId());
+                }
+                for (Directions direction : recipe.getDirections()) {
+                    directionsRepository.deleteById(direction.getId());
+                }
+                recipeRepository.deleteById(recipeIds[i]);
+            }
+        }
+        model.addAttribute("title", "Browse Recipes");
+        model.addAttribute("recipes", recipeRepository.findAll());
+        return "/recipe/browse";
+    }
 
 }
