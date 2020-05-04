@@ -143,8 +143,8 @@ public class RecipeController {
             Recipe recipeHolder = origRecipe.get();
 
             for (int i = 0; i < ingredientIds.length; i++) {
-                Optional<Ingredient> optIngredient = ingredientRepository.findById(ingredientIds[i]);
-                Ingredient ingredientHolder = optIngredient.get();
+                Optional<Ingredient> origIngredient = ingredientRepository.findById(ingredientIds[i]);
+                Ingredient ingredientHolder = origIngredient.get();
 
                 ingredientHolder.setRecipe(recipeHolder);
                 ingredientHolder.setName(recipe.getIngredients().get(i).getName());

@@ -73,7 +73,7 @@
     </ol>
 </fieldset>
 
-<input type="hidden" th:value="${recipe.id}" name="recipeId"/>
+<input type="hidden" th:value="*{id}" name="recipeId"/>
 
 <input type="submit" value="Save Changes"/>
 
