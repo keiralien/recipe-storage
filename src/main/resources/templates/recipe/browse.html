@@ -5,6 +5,8 @@
 
 <div th:replace="fragments :: navigation"></div>
 
+<a th:href="@{/recipe/delete}">Delete Recipes</a>
+
 <ul th:each="recipe : ${recipes}">
     <li>
         <a th:href="@{'/recipe/view/' + ${recipe.id}}" th:text="${recipe.name}"></a>

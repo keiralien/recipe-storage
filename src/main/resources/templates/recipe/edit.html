@@ -9,12 +9,12 @@
 <!--    BASE RECIPE INFO-->
 <fieldset>
     <label>Name</label>
-    <input type="text" name="recName" th:value="${recipe.name}"/>
-    <span th:errors="${recipe.name}"></span>
+    <input th:field="*{name}"/>
+    <span th:errors="*{name}"></span>
 
     <label>Description</label>
-    <input th:field="${recipe.description}"/>
-    <span th:errors="${recipe.description}"></span>
+    <input th:field="*{description}"/>
+    <span th:errors="*{description}"></span>
 
 </fieldset>
 
@@ -22,48 +22,58 @@
 <fieldset>
     <label>Category</label>
         <th:block th:each="category : ${categories}">
-            <label th:text="${category.name}"></label>
             <input type="checkbox"
                    th:value="${category.id}"
-                   th:field="${recipe.categories}"/>
+                   th:field="*{categories}"/>
+            <label th:text="${category.name}"></label>
         </th:block>
-    <span th:errors="${recipe.categories}"></span>
+    <span th:errors="*{categories}"></span>
 </fieldset>
 
 
 <!--    INGREDIENTS-->
 <fieldset>
     <label>Ingredient</label>
-    <th:block th:each="ingredient : ${ingredients}">
-        <input th:field="${ingredient.name}"/>
+    <th:block th:field="*{ingredients}" th:each="ingredient, ing : *{ingredients}">
+        <input hidden th:name="ingredientIds" th:value="${ingredient.id}"/> <!--"|ingredients[${ing.index}].id|"-->
+        <input th:name="|ingredients[${ing.index}].name|" th:value="${ingredient.name}"/>
+<!--        th:field="${recipe.ingredients[__${ing.index}__].name}"/>-->
 <!--        <span th:errors="${ingredient.name}"></span>-->
 
-        <label>Amount</label>
-        <input th:field="${ingredient.amount}"/>
-<!--        <span th:errors="${ingredient.amount}"></span>-->
+        <input th:name="|ingredients[${ing.index}].amount|" th:value="${ingredient.amount}"/>
+<!--        <label>Amount</label>-->
+<!--        <input th:field="${recipe.ingredients[__${ingredient.index}__].amount}"/>-->
+<!--&lt;!&ndash;        <span th:errors="${ingredient.amount}"></span>&ndash;&gt;-->
 
-        <label>Unit</label>
-            <select  name="unitId">
-                <option th:each="unit : ${units}"
-                        th:text="${unit.abbreviation}"
-                        th:value="${unit.id}"
-                        th:selected="${ingredient.unit.id}"></option>
-            </select>
-
-        <input type="hidden" th:value="${ingredient.id}" name="ingredientId"/>
+        <select th:name="|ingredients[${ing.index}].unit|">
+            <option th:each="unit : ${units}"
+                    th:text="${unit.abbreviation}"
+                    th:value="${unit.id}"
+                    th:selected="${unit.id == ingredient.unit.id}"/>
+        </select>
+<!--        <label>Unit</label>-->
+<!--            <select th:field="${recipe.ingredients[__${ingredient.index}__].unit}">-->
+<!--                <option th:each="unit : ${units}"-->
+<!--                        th:text="${unit.abbreviation}"-->
+<!--                        th:value="${unit.id}"-->
+<!--                        th:selected="${recipe.ingredients[__${ingredient.index}__].unit.id}"></option>-->
+<!--            </select>-->
+<!--        <input type="hidden" th:value="${recipe.ingredients[__${ingredient.index}__].unit.id}" name="ingredientId"/>-->
     </th:block>
 </fieldset>
 
 <!--    DIRECTIONS-->
-<!--<fieldset>-->
-<!--    <label>Directions</label>-->
-<!--    <ol th:each="direction : ${recipe.getDirections()}">-->
-<!--        <li><input th:field="${direction.instruction}"/></li>-->
-<!--&lt;!&ndash;        <span th:errors="${direction.instruction}"></span>&ndash;&gt;-->
-<!--    </ol>-->
-<!--</fieldset>-->
+<fieldset>
+    <label>Directions</label>
+    <ol th:field="*{directions}" th:each="direction, dir : *{directions}">
+        <li><input hidden th:value="${direction.id}" th:name="directionIds"/><!--th:name="|directions[${dir.index}].id|"-->
+            <input type="text"
+                   th:name="|directions[${dir.index}].instruction|"
+                   th:value="${direction.instruction}"/></li>
+    </ol>
+</fieldset>
 
-<input type="hidden" th:value="${recipe.id}" name="eventId"/>
+<input type="hidden" th:value="${recipe.id}" name="recipeId"/>
 
 <input type="submit" value="Save Changes"/>
 

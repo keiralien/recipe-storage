@@ -20,6 +20,11 @@ public abstract class AbstractEntity {
     @Size(min = 3, max = 100, message = "Must be between 3 and 100 characters long.")
     private String name;
 
+    public AbstractEntity() {}
+
+    public AbstractEntity(String name) {
+        this.name = name;
+    }
     public int getId() {
         return id;
     }

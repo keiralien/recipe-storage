@@ -2,7 +2,6 @@ package org.launchcode.recipestorage.controllers;
 
 import org.launchcode.recipestorage.models.*;
 import org.launchcode.recipestorage.models.data.*;
-import org.launchcode.recipestorage.models.dto.DirectionsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +9,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -114,8 +114,6 @@ public class RecipeController {
             Recipe recipe = (Recipe) optRecipe.get();
             model.addAttribute("recipe", recipe);
             model.addAttribute("title", "Edit: " + recipe.getName());
-//            model.addAttribute("directions", recipe.getDirections());
-            model.addAttribute("ingredients", recipe.getIngredients());
             return "recipe/edit";
         } else{
             return "redirect:../";
@@ -124,10 +122,12 @@ public class RecipeController {
 
     @PostMapping("/edit/{recipeId}")
     public String processRecipeEdit (@ModelAttribute @Valid Recipe recipe,
-                                     @ModelAttribute @Valid List<Ingredient> ingredients,
-//                                     @ModelAttribute @Valid List<Directions> directions,
-                                     @RequestParam String recName,
-                                     @RequestParam int eventId, Model model, Errors errors) {
+                                     @ModelAttribute @Valid Directions directions,
+                                     @ModelAttribute @Valid Ingredient ingredient,
+                                     @RequestParam int recipeId,
+                                     @RequestParam int[] directionIds,
+                                     @RequestParam int[] ingredientIds,
+                                     Model model, Errors errors) {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Edit " + recipe.getName());
@@ -135,19 +135,45 @@ public class RecipeController {
             model.addAttribute("units", unitRepository.findAll());
             return "/recipe/edit";
         }
-        Optional<Recipe> optRecipe = recipeRepository.findById(eventId);
-        if (optRecipe.isPresent()) {
-            Recipe recipeHolder = optRecipe.get();
+        List<Directions> directionsList = new ArrayList<>();
+        List<Ingredient> ingredientsList = new ArrayList<>();
 
-            recipeHolder.setName(recName);
+        Optional<Recipe> origRecipe = recipeRepository.findById(recipeId);
+        if (origRecipe.isPresent()) {
+            Recipe recipeHolder = origRecipe.get();
+
+            for (int i = 0; i < ingredientIds.length; i++) {
+                Optional<Ingredient> optIngredient = ingredientRepository.findById(ingredientIds[i]);
+                Ingredient ingredientHolder = optIngredient.get();
+
+                ingredientHolder.setRecipe(recipeHolder);
+                ingredientHolder.setName(recipe.getIngredients().get(i).getName());
+                ingredientHolder.setAmount(recipe.getIngredients().get(i).getAmount());
+                ingredientHolder.setUnit(recipe.getIngredients().get(i).getUnit());
+
+                ingredientsList.add(ingredientHolder);
+            }
+
+            for (int i = 0; i < directionIds.length; i++) {
+                Optional<Directions> origDirections = directionsRepository.findById(directionIds[i]);
+                Directions directionsHolder = origDirections.get();
+
+                directionsHolder.setRecipe(recipeHolder);
+                directionsHolder.setInstruction(recipe.getDirections().get(i).getInstruction());
+
+                directionsList.add(directionsHolder);
+            }
+
+            recipeHolder.setName(recipe.getName());
             recipeHolder.setDescription(recipe.getDescription());
             recipeHolder.setCategories(recipe.getCategories());
-            recipeHolder.setIngredients(ingredients);
-            recipeHolder.setDirections(recipe.getDirections());
+            recipeHolder.setIngredients(ingredientsList);
+            recipeHolder.setDirections(directionsList);
 
+            model.addAttribute("title", "Browse Recipes");
+            model.addAttribute("recipes", recipeRepository.findAll());
             recipeRepository.save(recipeHolder);
         }
-
         return "/recipe/browse";
     }
 
@@ -155,17 +181,22 @@ public class RecipeController {
     public String displayDeleteRecipe (Model model) {
         model.addAttribute("title", "Delete Recipes");
         model.addAttribute("recipes", recipeRepository.findAll());
-        return "/delete";
+        return "/recipe/delete";
     }
 
-    @PostMapping("delete")
-    public String processDeleteRecipe(@RequestParam(required = false) int[] recipeIds) {
-        if(recipeIds != null) {
-            for (int id : recipeIds) {
-                recipeRepository.deleteById(id);
-            }
-        }
-        return "redirect:";
-    }
+//    @PostMapping("/delete")
+//    public String processDeleteRecipe(@RequestParam(required = false) int[] recipeIds) {
+//        if(recipeIds != null) {
+//            for (int id : recipeIds) {
+//                Optional<Recipe> recipe = recipeRepository.findById(id);
+//                int[] ingredientIds;
+//                recipe.ingredients.id
+//                for (int ingredientId : )
+//
+//                recipeRepository.deleteById(id);
+//            }
+//        }
+//        return "redirect:";
+//    }
 
 }
