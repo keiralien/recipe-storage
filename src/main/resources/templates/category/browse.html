@@ -5,6 +5,10 @@
 
 <div th:replace="fragments :: navigation"></div>
 
+<div>
+    <h5 th:if="${message}" th:utext="${message}"></h5>
+</div>
+
 <ul th:each="category : ${categories}">
     <li>
         <a th:href="@{'/category/view/' + ${category.id}}" th:text="${category.name}"></a>
