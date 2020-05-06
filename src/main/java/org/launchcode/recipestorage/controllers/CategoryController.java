@@ -36,21 +36,20 @@ public class CategoryController {
             model.addAttribute(new Category());
             return "/category/add";
         }
-
-        if(!categoryRepository.findAll().toString().toLowerCase().contains(newCategory.getName().toLowerCase())) {
-            categoryRepository.save(newCategory);
-        } else {
-            model.addAttribute("message", "Category [[${newCategory.getName()}]] already exists.");
+        if(categoryRepository.findAll().toString().toLowerCase().contains(newCategory.getName().toLowerCase())) {
+            model.addAttribute("message", "Category already exists.");
             model.addAttribute("title", "Add or Remove Category");
             model.addAttribute("categories",categoryRepository.findAll());
             model.addAttribute(new Category());
+            return"/category/add";
         }
+        categoryRepository.save(newCategory);
+        model.addAttribute("categories", categoryRepository.findAll());
         return "/category/browse";
     }
 
     @GetMapping("/browse")
     public String recipeBrowse (LoginFormDTO loginFormDTO, Model model) {
-        model.addAttribute("user", loginFormDTO.getUsername());
         model.addAttribute("categories", categoryRepository.findAll());
         return "/category/browse";
     }
