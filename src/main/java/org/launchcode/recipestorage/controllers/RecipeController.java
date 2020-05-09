@@ -50,8 +50,10 @@ public class RecipeController {
     public String processAddRecipe(@ModelAttribute @Valid Recipe newRecipe,
                                    @ModelAttribute @Valid Directions newDirections,
                                    @ModelAttribute @Valid Ingredient newIngredient,
-                                   @RequestParam String recName,
+//                                   @RequestParam String recName,
                                    @RequestParam List<Integer> categories,
+                                   @RequestParam List<Ingredient> ingredients,
+                                   @RequestParam List<Directions> directions,
                                    Integer unitId, Errors errors, Model model) {
 
 //        Check for errors in the new recipe and return those errors.
@@ -67,7 +69,7 @@ public class RecipeController {
 
 //        Check whether the recipe name entered matches an existing recipe name. If so,
 //        return with a message indicating recipe name is a duplicate.
-        if(recipeRepository.findAll().toString().toLowerCase().contains(recName.toLowerCase())) {
+        if(recipeRepository.findAll().toString().toLowerCase().contains(newRecipe.getName().toLowerCase())) {
             model.addAttribute("message", "A recipe with that name already exists.");
             model.addAttribute("title", "Add Recipe");
             model.addAttribute("categories", categoryRepository.findAll());
@@ -82,7 +84,7 @@ public class RecipeController {
         List<Category> categoryObj = (List<Category>) categoryRepository.findAllById(categories);
         newRecipe.setCategories(categoryObj);
 
-        newRecipe.setName(recName);
+//        newRecipe.setName(recName);
         recipeRepository.save(newRecipe);
 
         Optional<Unit> unitObj = unitRepository.findById(unitId);
@@ -92,14 +94,23 @@ public class RecipeController {
         Optional<Recipe> recObj = recipeRepository.findById(newRecipe.getId());
         Recipe recipe = recObj.get();
 
-        newDirections.setRecipe(recipe);
-        directionsRepository.save(newDirections);
+        for(Directions direction : directions) {
+            direction.setRecipe(recipe);
+            directionsRepository.save(direction);
+        }
 
-        newIngredient.setRecipe(recipe);
-        ingredientRepository.save(newIngredient);
+        for(Ingredient ingredient : ingredients) {
+            newIngredient.setRecipe(recipe);
+            ingredientRepository.save(newIngredient);
+        }
 
         model.addAttribute("recipes", recipeRepository.findAll());
         return "/recipe/browse";
+    }
+
+    @RequestMapping(value = "add", params={"addRow"})
+    public String addRow (final Ingredient ingredient, Model model) {
+        ingredient.getRows().add(new Row());
     }
 
     @GetMapping("/browse")
