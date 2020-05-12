@@ -33,23 +33,26 @@
 
 <!--    INGREDIENTS-->
     <fieldset>
-        <label>Ingredient
-            <input th:field="${ingredient.name}"/>
-        </label>
-        <span th:errors="${ingredient.name}"></span>
+        <div id="addIngredient">
+            <label>Ingredient
+                <input th:field="${ingredient.name}"/>
+            </label>
+            <span th:errors="${ingredient.name}"></span>
 
-        <label>Amount
-            <input th:field="${ingredient.amount}"/>
-        </label>
-        <span th:errors="${ingredient.amount}"></span>
+            <label>Amount
+                <input th:field="${ingredient.amount}"/>
+            </label>
+            <span th:errors="${ingredient.amount}"></span>
 
-        <label th:for="units">Unit
-            <select name="unitId">
-                <option th:each="unit : ${units}"
-                        th:text="${unit.abbreviation}"
-                        th:value="${unit.id}"></option>
-            </select>
-        </label>
+            <label th:for="units">Unit
+                <select name="unitId">
+                    <option th:each="unit : ${units}"
+                            th:text="${unit.abbreviation}"
+                            th:value="${unit.id}"></option>
+                </select>
+            </label>
+            <button type="button"></button>
+        </div>
     </fieldset>
 <!--    <span th:errors="${unit.abbreviation}"></span>-->
 

@@ -83,6 +83,11 @@ public class RecipeController {
         return "/recipe/browse";
     }
 
+//    @RequestMapping(value="/add", params={"addRow"})
+//    public String addRow(final Ingredient ingredient, Model model) {
+//
+//    }
+
     @GetMapping("/browse")
     public String displayRecipeBrowse (Model model) {
         model.addAttribute("title", "Browse Recipes");
