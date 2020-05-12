@@ -5,6 +5,8 @@
 
 <div th:replace="fragments :: navigation"></div>
 
+<h5 th:if="${message}" th:text="${message}"></h5>
+
 <form method="post">
     <label>Category
         <input th:field="${category.name}"/>
