@@ -62,4 +62,5 @@ public class Recipe extends AbstractEntity{
     public void setDirections(List<Directions> directions) {
         this.directions = directions;
     }
+
 }

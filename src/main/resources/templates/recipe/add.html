@@ -13,7 +13,7 @@
     <fieldset>
         <label>Name
 <!--            <input type="text" name="recName"/>-->
-            <input th:field="*{name}"/>
+            <input th:field="*{name}" name="recName"/>
         </label>
         <span th:errors="*{name}"></span>
 
@@ -35,63 +35,38 @@
     </fieldset>
 
 <!--    INGREDIENTS-->
-    <fieldset>
-        <th:block th:field="*{ingredients}" th:each="ingredient, ing : ${ingredients}">
-            <label>Ingredients
-                <input th:name="|ingredient[${ing.index}].name|"/>
-<!--            <input th:field="*{ingredient.name}"/>-->
-            </label>
-            <span th:errors="${ingredient.name}"></span>
-        <div id="addIngredient">
-            <label>Ingredient
+    <fieldset id="ingredientSection">
+        <th:block id="ingredientBlock">
+            <label>Ingredient</label>
                 <input th:field="${ingredient.name}"/>
-            </label>
             <span th:errors="${ingredient.name}"></span>
 
-            <label>Amount
-                <input th:name="|ingredient[${ing.index}].amount|"/>
-            </label>
-            <span th:errors="${ingredient.amount}"></span>
-            <label>Amount
-                <input th:field="${ingredient.amount}"/>
-            </label>
+            <label>Amount</label>
+                <input th:name="${ingredient.amount}"/>
             <span th:errors="${ingredient.amount}"></span>
 
-            <label th:for="units">Unit
-    <!--            <select name="unitId">-->
-    <!--                <option th:each="unit : ${units}"-->
-    <!--                        th:text="${unit.abbreviation}"-->
-    <!--                        th:value="${unit.id}"></option>-->
-    <!--            </select>-->
-
-                <select th:name="|ingredient[${ing.index}].unit|">
+            <label th:for="units">Unit</label>
+                <select th:name="unitId">
                     <option th:each="unit : ${units}"
                             th:text="${unit.abbreviation}"
                             th:value="${unit.id}"/>
                 </select>
-            </label>
-        </th:block>
 
-            <label th:for="units">Unit
-                <select name="unitId">
-                    <option th:each="unit : ${units}"
-                            th:text="${unit.abbreviation}"
-                            th:value="${unit.id}"></option>
-                </select>
-            </label>
-            <button type="button"></button>
-        </div>
+            <button id="addIngredient" type="button" onclick="addAnotherIngredient()">Add Ingredient</button>
+        </th:block>
     </fieldset>
 <!--    <span th:errors="${unit.abbreviation}"></span>-->
 
 <!--    DIRECTIONS-->
     <fieldset>
-        <label th:field="*{directions}" th:each="direction, dir : ${directions}">Directions
-            <ol>
-                <li><input th:name="|direction[${dir.index}].instruction|"></li>
-            </ol>
-        </label>
-        <span th:errors="*{instruction}"></span>
+        <label>Directions</label>
+                <ol>
+                    <li id="directionLine1">
+                        <input th:field="${directions.instruction}"/>
+                        <button id="addDirection1" type="button" onclick="addAnotherDirection()">Add Direction</button>
+                    </li>
+                </ol>
+        <span th:errors="${directions.instruction}"></span>
     </fieldset>
 
 <input type="submit" value="Create Recipe"/>

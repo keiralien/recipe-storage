@@ -50,10 +50,10 @@ public class RecipeController {
     public String processAddRecipe(@ModelAttribute @Valid Recipe newRecipe,
                                    @ModelAttribute @Valid Directions newDirections,
                                    @ModelAttribute @Valid Ingredient newIngredient,
-//                                   @RequestParam String recName,
+                                   @RequestParam String recName,
                                    @RequestParam List<Integer> categories,
-                                   @RequestParam List<Ingredient> ingredients,
-                                   @RequestParam List<Directions> directions,
+                                   @RequestParam List<Ingredient> ingredientsList,
+                                   @RequestParam List<Directions> directionsList,
                                    Integer unitId, Errors errors, Model model) {
 
 //        Check for errors in the new recipe and return those errors.
@@ -84,7 +84,7 @@ public class RecipeController {
         List<Category> categoryObj = (List<Category>) categoryRepository.findAllById(categories);
         newRecipe.setCategories(categoryObj);
 
-//        newRecipe.setName(recName);
+        newRecipe.setName(recName);
         recipeRepository.save(newRecipe);
 
         Optional<Unit> unitObj = unitRepository.findById(unitId);
@@ -94,24 +94,25 @@ public class RecipeController {
         Optional<Recipe> recObj = recipeRepository.findById(newRecipe.getId());
         Recipe recipe = recObj.get();
 
-        for(Directions direction : directions) {
-            direction.setRecipe(recipe);
-            directionsRepository.save(direction);
-        }
+        newDirections.setRecipe(recipe);
+        directionsRepository.save(newDirections);
 
-        for(Ingredient ingredient : ingredients) {
-            newIngredient.setRecipe(recipe);
-            ingredientRepository.save(newIngredient);
-        }
+        newIngredient.setRecipe(recipe);
+        ingredientRepository.save(newIngredient);
+//
+//        for(Directions direction : newRecipe.getDirections()) {
+//            direction.setRecipe(recipe);
+//            directionsRepository.save(direction);
+//        }
+//
+//        for(Ingredient ingredient : newRecipe.getIngredients()) {
+//            newIngredient.setRecipe(recipe);
+//            ingredientRepository.save(newIngredient);
+//        }
 
         model.addAttribute("recipes", recipeRepository.findAll());
         return "/recipe/browse";
     }
-
-//    @RequestMapping(value = "add", params={"addRow"})
-//    public String addRow (final Ingredient ingredient, Model model) {
-//        ingredient.getRows().add(new Row());
-//    }
 
 
     @GetMapping("/browse")
