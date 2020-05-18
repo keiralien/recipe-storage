@@ -53,7 +53,7 @@ public class RecipeController {
                                    @RequestParam String recName,
                                    @RequestParam List<Integer> categories,
                                    @RequestParam List<Ingredient> ingredientsList,
-                                   @RequestParam List<Directions> directionsList,
+                                   @RequestParam List<String> directionsList,
                                    Integer unitId, Errors errors, Model model) {
 
 //        Check for errors in the new recipe and return those errors.
@@ -95,7 +95,10 @@ public class RecipeController {
         Recipe recipe = recObj.get();
 
         newDirections.setRecipe(recipe);
-        directionsRepository.save(newDirections);
+        for (String instruction : directionsList) {
+            newDirections.setInstruction(instruction);
+            directionsRepository.save(newDirections);
+        }
 
         newIngredient.setRecipe(recipe);
         ingredientRepository.save(newIngredient);
