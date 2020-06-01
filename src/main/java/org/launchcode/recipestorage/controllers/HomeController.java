@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
@@ -54,7 +53,7 @@ public class HomeController {
      * @return a list of search results.
      */
     @PostMapping
-    public String processSearch(Model model, @RequestParam String searchTerm, @RequestParam String fieldType) {
+    public String processSearch(Model model, HttpSession session, @RequestParam String searchTerm, @RequestParam String fieldType) {
         model.addAttribute("title", "Home");
         model.addAttribute("fieldTypes", fieldTypes);
 
@@ -63,5 +62,6 @@ public class HomeController {
         model.addAttribute("recipes", recipes);
         return "index";
     }
+
 
 }

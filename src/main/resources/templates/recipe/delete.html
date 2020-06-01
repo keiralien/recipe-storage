@@ -7,11 +7,10 @@
 <div th:replace="fragments :: navigation"></div>
 
 <form method="post">
+    <label>Select Recipes for Deletion:</label>
     <th:block th:each="recipe : ${recipes}">
-        <label>
-            <span th:text="${recipe.name}"></span>
-            <input type="checkbox" name="recipeIds" th:value="${recipe.id}">
-        </label>
+        <input type="checkbox" name="recipeIds" th:value="${recipe.id}">
+        <span th:text="${recipe.name}"></span>
     </th:block>
     <input type="submit" value="Delete">
 

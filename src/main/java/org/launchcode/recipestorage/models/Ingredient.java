@@ -14,7 +14,7 @@ public class Ingredient extends AbstractEntity {
     @OneToOne
     private Unit unit;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name="recipe.id")
     private Recipe recipe;
 

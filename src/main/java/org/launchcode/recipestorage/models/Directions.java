@@ -9,7 +9,7 @@ public class Directions {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name="recipe.id")
     private Recipe recipe;
 

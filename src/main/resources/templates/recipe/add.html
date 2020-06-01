@@ -11,26 +11,23 @@
 
     <!--    BASE RECIPE INFO-->
     <fieldset>
-        <label>Name
+        <label>Name</label>
 <!--            <input type="text" name="recName"/>-->
-            <input th:field="*{name}" name="recName"/>
-        </label>
+            <input th:field="*{name}"/>
         <span th:errors="*{name}"></span>
 
-        <label>Description
+        <label>Description</label>
             <input th:field="*{description}"/>
-        </label>
         <span th:errors="*{description}"></span>
     </fieldset>
 
     <!--    CATEGORIES-->
     <fieldset>
-        <label th:for="categories">Category
+        <label th:for="categories">Category</label>
             <th:block th:each="category : ${categories}">
                 <input type="checkbox" name="categories" th:value="${category.id}">
                 <label th:text="${category.name}"></label>
             </th:block>
-        </label>
         <span th:errors="*{categories}"></span>
     </fieldset>
 
@@ -38,21 +35,21 @@
     <fieldset id="ingredientSection">
         <th:block id="ingredientBlock">
             <label>Ingredient</label>
-                <input th:field="${ingredient.name}"/>
+                <input th:type="text" th:name="ingredientNameList"/>
             <span th:errors="${ingredient.name}"></span>
 
             <label>Amount</label>
-                <input th:name="${ingredient.amount}"/>
+                <input th:name="ingredientAmountList"/>
             <span th:errors="${ingredient.amount}"></span>
 
             <label th:for="units">Unit</label>
-                <select th:name="unitId">
+                <select th:name="unitIdList">
                     <option th:each="unit : ${units}"
                             th:text="${unit.abbreviation}"
                             th:value="${unit.id}"/>
                 </select>
 
-            <button id="addIngredient" type="button" onclick="addAnotherIngredient()">Add Ingredient</button>
+            <button id="addIngredient" th:type="button" th:onclick="addAnotherIngredient()">Add Row</button>
         </th:block>
     </fieldset>
 <!--    <span th:errors="${unit.abbreviation}"></span>-->
@@ -60,10 +57,10 @@
 <!--    DIRECTIONS-->
     <fieldset>
         <label>Directions</label>
+        <button id="addDirection">Add Row</button>
                 <ol>
                     <li id="directionLine1">
                         <input th:type="text" th:name="directionsList"/>
-                        <button id="addDirection1" type="button" onclick="addAnotherDirection()">Add Direction</button>
                     </li>
                 </ol>
         <span th:errors="${directions.instruction}"></span>

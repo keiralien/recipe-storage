@@ -17,15 +17,25 @@ public class Search {
         List<Recipe> results = new ArrayList<>();
 
         if(searchTerm.toLowerCase().equals("all")) {
-            return (ArrayList<Recipe>) allRecipes;
+            for (Recipe recipe : allRecipes) {
+//                if (recipe.getUser().getId() == userId) {
+                    results.add(recipe);
+//                }
+            }
+            return results;
         }
+
         if(fieldType.equals("all")) {
             results = findByValue(allRecipes, searchTerm);
             return results;
         }
+
         for (Recipe recipe : allRecipes) {
             String fieldValue = fieldMatch(recipe, fieldType);
-            if (fieldValue != "" && fieldValue.toLowerCase().contains(searchTerm)) {
+            if (fieldValue != ""
+                    && fieldValue.toLowerCase().contains(searchTerm)
+//                    && recipe.getUser().getId() == userId
+                ) {
                 results.add(recipe);
             }
         }
@@ -44,17 +54,19 @@ public class Search {
         List<Recipe> results = new ArrayList<>();
 
         for (Recipe recipe : allRecipes) {
-            if (recipe.getName().toLowerCase().contains(value.toLowerCase())) {
-                results.add(recipe);
-            } else if (recipe.getDescription().toLowerCase().contains(value.toLowerCase())) {
-                results.add(recipe);
-            } else if (recipe.getCategories().toString().toLowerCase().contains(value.toLowerCase())) {
-                results.add(recipe);
-            } else if (recipe.getIngredients().toString().toLowerCase().contains(value.toLowerCase())) {
-                results.add(recipe);
-            } else if (recipe.getDirections().toString().toLowerCase().contains(value.toLowerCase())) {
-                results.add(recipe);
-            }
+//            if (recipe.getUser().getId() == userId) {
+                if (recipe.getName().toLowerCase().contains(value.toLowerCase())) {
+                    results.add(recipe);
+                } else if (recipe.getDescription().toLowerCase().contains(value.toLowerCase())) {
+                    results.add(recipe);
+                } else if (recipe.getCategories().toString().toLowerCase().contains(value.toLowerCase())) {
+                    results.add(recipe);
+                } else if (recipe.getIngredients().toString().toLowerCase().contains(value.toLowerCase())) {
+                    results.add(recipe);
+                } else if (recipe.getDirections().toString().toLowerCase().contains(value.toLowerCase())) {
+                    results.add(recipe);
+                }
+//            }
         }
         return results;
     }
@@ -68,7 +80,7 @@ public class Search {
     public static String fieldMatch (Recipe recipe, String fieldType) {
         String value;
 
-        if(fieldType.equals("name")) {
+        if (fieldType.equals("name")) {
             value = recipe.getName();
         } else if (fieldType.equals("description")) {
             value = recipe.getDescription();
@@ -82,7 +94,9 @@ public class Search {
 //        else if (fieldType.equals("servings")) {
 //            value = recipe.getServings().toString();
 //        }
-        else {value = "";}
+        else {
+            value = "";
+        }
 
         return value;
     }

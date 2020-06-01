@@ -30,20 +30,14 @@
     <span th:errors="*{categories}"></span>
 </fieldset>
 
-
 <!--    INGREDIENTS-->
 <fieldset>
     <label>Ingredient</label>
     <th:block th:field="*{ingredients}" th:each="ingredient, ing : *{ingredients}">
         <input hidden th:name="ingredientIds" th:value="${ingredient.id}"/> <!--"|ingredients[${ing.index}].id|"-->
         <input th:name="|ingredients[${ing.index}].name|" th:value="${ingredient.name}"/>
-<!--        th:field="${recipe.ingredients[__${ing.index}__].name}"/>-->
-<!--        <span th:errors="${ingredient.name}"></span>-->
 
         <input th:name="|ingredients[${ing.index}].amount|" th:value="${ingredient.amount}"/>
-<!--        <label>Amount</label>-->
-<!--        <input th:field="${recipe.ingredients[__${ingredient.index}__].amount}"/>-->
-<!--&lt;!&ndash;        <span th:errors="${ingredient.amount}"></span>&ndash;&gt;-->
 
         <select th:name="|ingredients[${ing.index}].unit|">
             <option th:each="unit : ${units}"
@@ -51,14 +45,7 @@
                     th:value="${unit.id}"
                     th:selected="${unit.id == ingredient.unit.id}"/>
         </select>
-<!--        <label>Unit</label>-->
-<!--            <select th:field="${recipe.ingredients[__${ingredient.index}__].unit}">-->
-<!--                <option th:each="unit : ${units}"-->
-<!--                        th:text="${unit.abbreviation}"-->
-<!--                        th:value="${unit.id}"-->
-<!--                        th:selected="${recipe.ingredients[__${ingredient.index}__].unit.id}"></option>-->
-<!--            </select>-->
-<!--        <input type="hidden" th:value="${recipe.ingredients[__${ingredient.index}__].unit.id}" name="ingredientId"/>-->
+        <button id="addIngredient" th:type="button" th:onclick="addAnotherIngredient()">Add Row</button>
     </th:block>
 </fieldset>
 
@@ -70,6 +57,7 @@
             <input type="text"
                    th:name="|directions[${dir.index}].instruction|"
                    th:value="${direction.instruction}"/></li>
+        <button id="addDirection1" th:type="button" th:onclick="addAnotherDirection()">Add Row</button>
     </ol>
 </fieldset>
 

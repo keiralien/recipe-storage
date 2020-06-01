@@ -16,11 +16,15 @@ public class Recipe extends AbstractEntity{
     @NotNull(message = "Select at least one category.")
     private List<Category> categories;
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", cascade = {CascadeType.ALL})
     private List<Ingredient> ingredients = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", cascade = {CascadeType.ALL})
     private List<Directions> directions = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name="user.id")
+    private User user;
 
     public Recipe() {}
 
@@ -63,4 +67,11 @@ public class Recipe extends AbstractEntity{
         this.directions = directions;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

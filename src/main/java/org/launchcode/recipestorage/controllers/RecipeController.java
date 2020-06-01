@@ -45,16 +45,22 @@ public class RecipeController {
         return "recipe/add";
     }
 
+//    @RequestMapping(value = "/addDirection", method = RequestMethod.GET)
+//    public String addDirection() {
+//        return ;
+//    }
+
 //    Process the addition of a new recipe and all related information.
     @PostMapping("/add")
     public String processAddRecipe(@ModelAttribute @Valid Recipe newRecipe,
                                    @ModelAttribute @Valid Directions newDirections,
                                    @ModelAttribute @Valid Ingredient newIngredient,
-                                   @RequestParam String recName,
                                    @RequestParam List<Integer> categories,
-                                   @RequestParam List<Ingredient> ingredientsList,
+                                   @RequestParam List<String> ingredientNameList,
+                                   @RequestParam List<Double> ingredientAmountList,
+                                   @RequestParam List<Integer> unitIdList,
                                    @RequestParam List<String> directionsList,
-                                   Integer unitId, Errors errors, Model model) {
+                                   Errors errors, Model model) {
 
 //        Check for errors in the new recipe and return those errors.
         if (errors.hasErrors()) {
@@ -69,7 +75,7 @@ public class RecipeController {
 
 //        Check whether the recipe name entered matches an existing recipe name. If so,
 //        return with a message indicating recipe name is a duplicate.
-        if(recipeRepository.findAll().toString().toLowerCase().contains(newRecipe.getName().toLowerCase())) {
+        if(recipeRepository.findAll().toString().toLowerCase().equals(newRecipe.getName().toLowerCase())) {
             model.addAttribute("message", "A recipe with that name already exists.");
             model.addAttribute("title", "Add Recipe");
             model.addAttribute("categories", categoryRepository.findAll());
@@ -84,40 +90,35 @@ public class RecipeController {
         List<Category> categoryObj = (List<Category>) categoryRepository.findAllById(categories);
         newRecipe.setCategories(categoryObj);
 
-        newRecipe.setName(recName);
         recipeRepository.save(newRecipe);
-
-        Optional<Unit> unitObj = unitRepository.findById(unitId);
-        Unit unit = unitObj.get();
-        newIngredient.setUnit(unit);
 
         Optional<Recipe> recObj = recipeRepository.findById(newRecipe.getId());
         Recipe recipe = recObj.get();
 
+//        Create direction objects related to this recipe
         newDirections.setRecipe(recipe);
         for (String instruction : directionsList) {
             newDirections.setInstruction(instruction);
             directionsRepository.save(newDirections);
         }
 
-        newIngredient.setRecipe(recipe);
-        ingredientRepository.save(newIngredient);
-//
-//        for(Directions direction : newRecipe.getDirections()) {
-//            direction.setRecipe(recipe);
-//            directionsRepository.save(direction);
-//        }
-//
-//        for(Ingredient ingredient : newRecipe.getIngredients()) {
-//            newIngredient.setRecipe(recipe);
-//            ingredientRepository.save(newIngredient);
-//        }
+        for (int i = 0; i < ingredientNameList.size(); i++) {
+            newIngredient.setRecipe(recipe);
+            newIngredient.setName(ingredientNameList.get(i));
+            newIngredient.setAmount(ingredientAmountList.get(i));
+
+            Optional<Unit> unitObj = unitRepository.findById(unitIdList.get(i));
+            Unit unit = unitObj.get();
+            newIngredient.setUnit(unit);
+
+            ingredientRepository.save(newIngredient);
+        }
 
         model.addAttribute("recipes", recipeRepository.findAll());
         return "/recipe/browse";
     }
 
-
+//  View a list of all recipes
     @GetMapping("/browse")
     public String displayRecipeBrowse (Model model) {
         model.addAttribute("title", "Browse Recipes");

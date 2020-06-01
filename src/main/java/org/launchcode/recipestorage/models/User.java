@@ -2,11 +2,10 @@ package org.launchcode.recipestorage.models;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class User {
@@ -20,6 +19,9 @@ public class User {
 
     @NotNull
     private String pwHash;
+
+    @OneToMany(mappedBy = "user")
+    private List<Recipe> recipes = new ArrayList<>();
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -40,5 +42,13 @@ public class User {
 
     public boolean isMatchingPassword(String password) {
         return encoder.matches(password, pwHash);
+    }
+
+    public List<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(List<Recipe> recipes) {
+        this.recipes = recipes;
     }
 }
