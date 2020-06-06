@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,23 +33,35 @@ public class RecipeController {
     @Autowired
     private UnitRepository unitRepository;
 
+    private List<String> directionsList = new ArrayList<>();
+
+    private static final String ajaxHeaderName = "X-Requested-With";
+    private static final String ajaxHeaderValue = "XMLHttpRequest";
+
 //    Return the Add Recipe page passing in page title, existing category and unit information,
 //    and the models for mapping new records.
     @GetMapping("/add")
     public String displayAddRecipe(Model model) {
+        directionsList.add("");
         model.addAttribute("title", "Add Recipe");
         model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute("units", unitRepository.findAll());
+        model.addAttribute("directionsList", directionsList);
         model.addAttribute(new Recipe());
         model.addAttribute(new Directions());
         model.addAttribute(new Ingredient());
         return "recipe/add";
     }
 
-//    @RequestMapping(value = "/addDirection", method = RequestMethod.GET)
-//    public String addDirection() {
-//        return ;
-//    }
+    @PostMapping(params = "addDirection", path = {"/add"})
+    public String addDirection(HttpServletRequest request) {
+        if(ajaxHeaderValue.equals(request.getHeader(ajaxHeaderName))) {
+            directionsList.add("");
+            return "recipe/add::#directionsSection";
+        } else {
+            return "recipe/add";
+        }
+    }
 
 //    Process the addition of a new recipe and all related information.
     @PostMapping("/add")
@@ -96,8 +109,11 @@ public class RecipeController {
         Recipe recipe = recObj.get();
 
 //        Create direction objects related to this recipe
-        newDirections.setRecipe(recipe);
+
+//        String[] dirList = directionsList.toString().split(",");
+
         for (String instruction : directionsList) {
+            newDirections.setRecipe(recipe);
             newDirections.setInstruction(instruction);
             directionsRepository.save(newDirections);
         }

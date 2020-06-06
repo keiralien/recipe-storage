@@ -10,7 +10,7 @@
 <form method="post" th:object="${recipe}">
 
     <!--    BASE RECIPE INFO-->
-    <fieldset>
+    <fieldset id="baseRecipeSection">
         <label>Name</label>
 <!--            <input type="text" name="recName"/>-->
             <input th:field="*{name}"/>
@@ -22,7 +22,7 @@
     </fieldset>
 
     <!--    CATEGORIES-->
-    <fieldset>
+    <fieldset id="categoriesSection">
         <label th:for="categories">Category</label>
             <th:block th:each="category : ${categories}">
                 <input type="checkbox" name="categories" th:value="${category.id}">
@@ -55,14 +55,14 @@
 <!--    <span th:errors="${unit.abbreviation}"></span>-->
 
 <!--    DIRECTIONS-->
-    <fieldset>
+    <fieldset id="directionsSection">
         <label>Directions</label>
-        <button id="addDirection">Add Row</button>
-                <ol>
-                    <li id="directionLine1">
-                        <input th:type="text" th:name="directionsList"/>
-                    </li>
-                </ol>
+        <button id="addDirection" name="addDirection" type="button">Add Row</button>
+            <ol id="directionFieldList">
+                <li th:each="direction, dir : ${directionsList}">
+                    <input th:id="|directionsList[${dir.index}]|" th:name="directionsList"/>
+                </li>
+            </ol>
         <span th:errors="${directions.instruction}"></span>
     </fieldset>
 
