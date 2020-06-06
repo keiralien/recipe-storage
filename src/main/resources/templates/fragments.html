@@ -3,36 +3,28 @@
 <head th:fragment="head">
     <meta charset="UTF-8"/>
 
-    <link th:href="@{/css/recipe-storage.css}" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-    <script th:src="@{/js/recipe-storage.js}"></script>
+    <link th:href='@{/css/recipe-storage.css}' type='text/css' rel='stylesheet'/>
+    <link href='https://fonts.googleapis.com/css?family=Amita' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet'>
+    <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
+    <script th:src='@{/js/recipe-storage.js}'></script>
 
 
-    <title th:text="'My Recipe Book: ' + ${title}"></title>
+    <title th:text="'Recipe Book: ' + ${title}"></title>
 </head>
 <body>
 
-<div th:fragment="navigation">
-<!--    <div th:if="${session} == null">-->
-        <h1 th:text="${title}"></h1>
+<div class="header" th:fragment="navigation">
+    <h1 th:text="${title}"></h1>
+    <div th:if="${title} != 'Log In'">
         <nav>
             <a th:href="@{/}">Home</a>
             <a th:href="@{/recipe/browse}">Browse Recipes</a>
             <a th:href="@{/recipe/add}">Add Recipe</a>
             <a th:href="@{/category/add}">Add Category</a>
-            <a th:href="@{/logout}">Log In</a>
+            <a th:href="@{/logout}">Logout</a>
         </nav>
-<!--    </div>-->
-<!--    <div th:if="${session} != null">-->
-<!--        <h1 th:text="${title}"></h1>-->
-<!--        <nav>-->
-<!--            <a th:href="@{/}">Home</a>-->
-<!--            <a th:href="@{/recipe/browse}">Browse Recipes</a>-->
-<!--            <a th:href="@{/recipe/add}">Add Recipe</a>-->
-<!--            <a th:href="@{/category/add}">Add Category</a>-->
-<!--            <a th:href="@{/logout}">Logout</a>-->
-<!--        </nav>-->
-<!--    </div>-->
+    </div>
 </div>
 
 </body>

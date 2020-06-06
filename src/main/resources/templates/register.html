@@ -5,27 +5,29 @@
 
 <div th:replace="fragments :: navigation"></div>
 
-<form method="post">
-    <div class="register-login">
-        <label>Username
-            <input th:field="${registerFormDTO.username}"/>
-        </label>
-        <p class="errors" th:errors="${registerFormDTO.username}"></p>
-    </div>
-    <div class="register-login">
-        <label>Password
-            <input th:field="${registerFormDTO.password}" type="password">
-        </label>
-        <p class="error" th:errors="${registerFormDTO.password}"></p>
-    </div>
-    <div class="register-login">
-        <label>Verify Password
-            <input th:field="${registerFormDTO.verifyPassword}" type="password"/>
-        </label>
-    </div>
+<div class="pageContent">
+    <form method="post">
+        <div class="register-login">
+            <label>Username
+                <input th:field="${registerFormDTO.username}"/>
+            </label>
+            <p class="errors" th:errors="${registerFormDTO.username}"></p>
+        </div>
+        <div class="register-login">
+            <label>Password
+                <input th:field="${registerFormDTO.password}" type="password">
+            </label>
+            <p class="error" th:errors="${registerFormDTO.password}"></p>
+        </div>
+        <div class="register-login">
+            <label>Verify Password
+                <input th:field="${registerFormDTO.verifyPassword}" type="password"/>
+            </label>
+        </div>
 
-    <input type="submit" value="Register"/>
-</form>
+        <input type="submit" value="Register"/>
+    </form>
+</div>
 
 </body>
 </html>

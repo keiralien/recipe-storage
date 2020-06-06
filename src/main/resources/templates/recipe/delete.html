@@ -6,16 +6,16 @@
 
 <div th:replace="fragments :: navigation"></div>
 
-<form method="post">
-    <label>Select Recipes for Deletion:</label>
-    <th:block th:each="recipe : ${recipes}">
-        <input type="checkbox" name="recipeIds" th:value="${recipe.id}">
-        <span th:text="${recipe.name}"></span>
-    </th:block>
-    <input type="submit" value="Delete">
-
-</form>
-
+<div class="pageContent">
+    <form method="post">
+        <label>Select Recipes for Deletion:</label>
+        <th:block th:each="recipe : ${recipes}">
+            <input type="checkbox" name="recipeIds" th:value="${recipe.id}">
+            <span th:text="${recipe.name}"></span>
+        </th:block>
+        <input type="submit" value="Delete">
+    </form>
+</div>
 
 </body>
 </html>

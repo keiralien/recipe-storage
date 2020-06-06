@@ -5,16 +5,18 @@
 
 <div th:replace="fragments :: navigation"></div>
 
-<h5 th:if="${message}" th:text="${message}"></h5>
+<div class="pageContent">
+    <h5 th:if="${message}" th:text="${message}"></h5>
 
-<form method="post">
-    <label>Category
-        <input th:field="${category.name}"/>
-        <span th:errors="${category.name}"></span>
-    </label>
+    <form method="post">
+        <label>Category
+            <input th:field="${category.name}"/>
+            <span th:errors="${category.name}"></span>
+        </label>
 
-    <input type="submit" value="Add Category"/>
-</form>
+        <input type="submit" value="Add Category"/>
+    </form>
+</div>
 
 </body>
 </html>

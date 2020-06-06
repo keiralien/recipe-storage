@@ -54,9 +54,11 @@ public class RecipeController {
     }
 
     @PostMapping(params = "addDirection", path = {"/add"})
-    public String addDirection(HttpServletRequest request) {
+    public String addDirection(
+            Model model, HttpServletRequest request) {
         if(ajaxHeaderValue.equals(request.getHeader(ajaxHeaderName))) {
             directionsList.add("");
+            model.addAttribute("directionsList", directionsList);
             return "recipe/add::#directionsSection";
         } else {
             return "recipe/add";

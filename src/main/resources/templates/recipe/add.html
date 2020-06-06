@@ -7,68 +7,76 @@
 
 <h5 th:if="${message}" th:text="${message}"></h5>
 
-<form method="post" th:object="${recipe}">
+<div class="pageContent">
+    <form method="post" th:object="${recipe}">
 
-    <!--    BASE RECIPE INFO-->
-    <fieldset id="baseRecipeSection">
-        <label>Name</label>
-<!--            <input type="text" name="recName"/>-->
-            <input th:field="*{name}"/>
-        <span th:errors="*{name}"></span>
+        <!--    BASE RECIPE INFO-->
+        <fieldset id="baseRecipeSection" class="inputDiv">
+            <h3>Recipe Details</h3>
+            <label>Name</label>
+                <input th:field="*{name}"/>
+            <span th:errors="*{name}"></span>
 
-        <label>Description</label>
-            <input th:field="*{description}"/>
-        <span th:errors="*{description}"></span>
-    </fieldset>
+            <label>Description</label>
+                <input th:field="*{description}"/>
+            <span th:errors="*{description}"></span>
+        </fieldset>
 
-    <!--    CATEGORIES-->
-    <fieldset id="categoriesSection">
-        <label th:for="categories">Category</label>
-            <th:block th:each="category : ${categories}">
-                <input type="checkbox" name="categories" th:value="${category.id}">
-                <label th:text="${category.name}"></label>
+        <!--    CATEGORIES-->
+        <fieldset id="categoriesSection" class="inputDiv">
+            <h3>Categories</h3>
+            <label th:for="categories">Select Categories</label>
+                <ul th:each="category : ${categories}">
+                    <li>
+                        </ol><input type="checkbox" name="categories" th:value="${category.id}">
+                        <label th:text="${category.name}"></label>
+                    </li>
+                </ul>
+            <span th:errors="*{categories}"></span>
+        </fieldset>
+
+    <!--    INGREDIENTS-->
+        <fieldset id="ingredientSection" class="inputDiv">
+            <h3>Ingredients</h3>
+            <th:block id="ingredientBlock">
+                <label>Ingredient</label>
+                    <input th:type="text" th:name="ingredientNameList"/>
+                <span th:errors="${ingredient.name}"></span>
+
+                <label>Amount</label>
+                    <input th:name="ingredientAmountList"/>
+                <span th:errors="${ingredient.amount}"></span>
+
+                <label th:for="units">Unit</label>
+                    <select th:name="unitIdList">
+                        <option th:each="unit : ${units}"
+                                th:text="${unit.abbreviation}"
+                                th:value="${unit.id}"/>
+                    </select>
+
+                <button id="addIngredient" th:type="button" th:onclick="addAnotherIngredient()">Add Row</button>
             </th:block>
-        <span th:errors="*{categories}"></span>
-    </fieldset>
+        </fieldset>
+    <!--    <span th:errors="${unit.abbreviation}"></span>-->
 
-<!--    INGREDIENTS-->
-    <fieldset id="ingredientSection">
-        <th:block id="ingredientBlock">
-            <label>Ingredient</label>
-                <input th:type="text" th:name="ingredientNameList"/>
-            <span th:errors="${ingredient.name}"></span>
+    <!--    DIRECTIONS-->
+        <fieldset id="directionsSection" class="inputDiv">
+            <h3>Directions:</h3>
+            <label>Add Directions</label>
+            <button class="actionButton" id="addDirection" name="addDirection" type="button">Add More Directions</button>
+                <ol id="directionFieldList">
+                    <li th:each="direction, dir : ${directionsList}">
+                        <input th:id="|directionsList[${dir.index}]|" th:name="directionsList"/>
+                    </li>
+                </ol>
+            <span th:errors="${directions.instruction}"></span>
+        </fieldset>
 
-            <label>Amount</label>
-                <input th:name="ingredientAmountList"/>
-            <span th:errors="${ingredient.amount}"></span>
+    <input type="submit" value="Create Recipe"/>
 
-            <label th:for="units">Unit</label>
-                <select th:name="unitIdList">
-                    <option th:each="unit : ${units}"
-                            th:text="${unit.abbreviation}"
-                            th:value="${unit.id}"/>
-                </select>
+    </form>
 
-            <button id="addIngredient" th:type="button" th:onclick="addAnotherIngredient()">Add Row</button>
-        </th:block>
-    </fieldset>
-<!--    <span th:errors="${unit.abbreviation}"></span>-->
-
-<!--    DIRECTIONS-->
-    <fieldset id="directionsSection">
-        <label>Directions</label>
-        <button id="addDirection" name="addDirection" type="button">Add Row</button>
-            <ol id="directionFieldList">
-                <li th:each="direction, dir : ${directionsList}">
-                    <input th:id="|directionsList[${dir.index}]|" th:name="directionsList"/>
-                </li>
-            </ol>
-        <span th:errors="${directions.instruction}"></span>
-    </fieldset>
-
-<input type="submit" value="Create Recipe"/>
-
-</form>
+</div>
 
 </body>
 </html>

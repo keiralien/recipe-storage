@@ -1,1 +1,128 @@
-body {background-color: pink}
+body {
+    margin: 0;
+    font-family: 'Lora';
+    font-size: 15px;
+    background-color: #e8e0d5;
+    }
+
+fieldset {
+    border: 2px solid #DCC7AA;
+    border-radius: 10px;
+    }
+
+h1 {
+    font-family: 'Amita';
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 1em 1em 0em 1em;
+    }
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Amita';
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 1em 0em 1em 0em;
+    }
+
+input[type=submit] {
+    background-color: #6B7A8F;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 1em 2em;
+    font-family: 'Lora';
+    font-size; 15px;
+    }
+
+input[type=submit]:hover {
+    background-color: #F7882F;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 1em 2em;
+    font-family: 'Lora';
+    font-size; 15px;
+    }
+
+nav {
+    display: block;
+    background-color: #6B7A8F;
+    position: sticky;
+    top: 0;
+    }
+
+nav a:link, nav a:visited {
+    color: white;
+    background-color: #6B7A8F;
+    padding: 1em 2em;
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+    border-right: 1px solid white;
+    }
+
+nav a:hover, a:active {
+    background-color: #F7882F;
+    color: white;
+    background-image: linear-gradient(bottom, rgb(73,132,180) 0%, rgb(97,155,203) 100%);
+    }
+
+ul {
+    list-style-type: none;
+    border: 1px solid #DCC7AA;
+    }
+
+ul li {
+    padding: 1em 1em 1em .5em;
+    }
+
+ul li:hover{
+    background-color: #DCC7AA;
+    }
+
+ul li:last-child {
+    border-bottom: none;
+    }
+
+li a:link {
+    text-decoration: none;
+    color: black;
+    display: inline-block;
+    }
+
+li a:visited {
+    text-decoration:none;
+    color:#52493e;
+}
+
+li a:hover {
+    text-decoration: underline;
+    color: white;
+}
+
+.header {
+    width: 100%;
+    background-color: #6B7A8F;
+    color: white;
+    }
+
+.inputDiv {
+    padding: 1em 0em 1em 0em;
+    }
+
+.inputLabel {
+    font-weight: bold;
+    padding: 2em 1em 2em 1em;
+    }
+
+.pageContent {
+    padding: 0em 2em 0em 2em;
+    }
+
+.register-login {
+
+    }

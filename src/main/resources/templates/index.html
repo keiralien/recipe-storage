@@ -5,27 +5,40 @@
 
 <div th:replace="fragments :: navigation"></div>
 
-<!--SEARCH FORM-->
-<form method="post">
-    <label for="searchTerm">Search</label>
-    <input type="text" name="searchTerm" id="searchTerm"/>
-    <p th:each="field : ${fieldTypes}">
-        <input type="radio"
-               name="fieldType"
-               th:id="${field.key}"
-               th:value="${field.key}"
-               th:checked="${field.key == 'all'}"/>
-        <label th:for="${field.key}" th:text="${field.value}"></label>
-    </p>
-    <input type="submit" value="Search" />
-</form>
+<div class="pageContent">
 
-<!--SEARCH RESULTS-->
-<ul th:each="recipe : ${recipes}">
-    <li>
-        <a th:href="@{'/recipe/view/' + ${recipe.id}}" th:text="${recipe.name}"></a>
-    </li>
-</ul>
+    <!--SEARCH FORM-->
+    <form method="post">
+        <div class="inputDiv">
+            <h3>Recipe Search</h3>
+            <label for="searchTerm" class="inputLabel">Term</label>
+            <input type="text" name="searchTerm" id="searchTerm"/>
+        </div>
+        <div>
+            <label class="inputLabel">Type</label>
+            <p th:each="field : ${fieldTypes}">
+            <input type="radio"
+                   name="fieldType"
+                   th:id="${field.key}"
+                   th:value="${field.key}"
+                   th:checked="${field.key == 'all'}"/>
+            <label th:for="${field.key}" th:text="${field.value}"></label>
+            </p>
+        </div>
+        <input type="submit" value="Search" />
+    </form>
+
+    <!--SEARCH RESULTS-->
+    <div>
+        <h3 th:if="${recipes}">Search Results</h3>
+        <p th:if="${recipes} ? (${recipes.size()} == 0? 'true')">No recipes found.</p>
+        <ul th:each="recipe : ${recipes}">
+            <li>
+                <a th:href="@{'/recipe/view/' + ${recipe.id}}" th:text="${recipe.name}"></a>
+            </li>
+    </ul>
+    </div>
+</div>
 
 </body>
 </html>
