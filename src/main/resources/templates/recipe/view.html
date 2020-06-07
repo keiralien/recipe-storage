@@ -20,8 +20,10 @@
             <span th:text="${ingredient.unit.abbreviation}"></span>
     </p>
     <h3>Directions</h3>
-    <ol th:each="direction : ${recipe.directions}">
-        <li th:text="${direction.instruction}"></li>
+    <ol>
+        <li th:each="direction : ${recipe.directions}">
+            <p th:text="${direction.instruction}"></p>
+        </li>
     </ol>
 
     <!--<h3>Servings</h3>-->

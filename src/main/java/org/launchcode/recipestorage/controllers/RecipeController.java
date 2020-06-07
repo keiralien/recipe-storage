@@ -38,6 +38,25 @@ public class RecipeController {
     private static final String ajaxHeaderName = "X-Requested-With";
     private static final String ajaxHeaderValue = "XMLHttpRequest";
 
+    private void addDirectionObj (String directionsString, Recipe recipe) {
+        String[] directionsList = directionsString.split(",");
+
+        for (String instruction : directionsList) {
+            Directions newDirections = new Directions();
+            newDirections.setRecipe(recipe);
+            newDirections.setInstruction(instruction.trim());
+            directionsRepository.save(newDirections);
+        }
+    }
+
+    private void adIngredientObj (String ingredientNameString,
+                                  String ingredientAmountString,
+                                  String ingredientUnitString,
+                                  Recipe recipe) {
+
+
+    }
+
     private void deleteRecipe (int[] recipeIds) {
         for (int i = 0; i < recipeIds.length; i++) {
             Optional<Recipe> origRecipe = recipeRepository.findById(recipeIds[i]);
@@ -68,28 +87,28 @@ public class RecipeController {
         return "recipe/add";
     }
 
-    @PostMapping(params = "addDirection", path = {"/add"})
-    public String addDirection(
-            Model model, HttpServletRequest request) {
-        if(ajaxHeaderValue.equals(request.getHeader(ajaxHeaderName))) {
-            directionsList.add("");
-            model.addAttribute("directionsList", directionsList);
-            return "recipe/add::#directionsSection";
-        } else {
-            return "recipe/add";
-        }
-    }
+//    @PostMapping(params = "addDirection", path = {"/add"})
+//    public String addDirection(
+//            Model model, HttpServletRequest request) {
+//        if(ajaxHeaderValue.equals(request.getHeader(ajaxHeaderName))) {
+//            directionsList.add("");
+//            model.addAttribute("directionsList", directionsList);
+//            return "recipe/add::#directionsSection";
+//        } else {
+//            return "recipe/add";
+//        }
+//    }
 
 //    Process the addition of a new recipe and all related information.
     @PostMapping("/add")
     public String processAddRecipe(@ModelAttribute @Valid Recipe newRecipe,
-                                   @ModelAttribute @Valid Directions newDirections,
+//                                   @ModelAttribute @Valid Directions newDirections,
                                    @ModelAttribute @Valid Ingredient newIngredient,
                                    @RequestParam List<Integer> categories,
                                    @RequestParam List<String> ingredientNameList,
                                    @RequestParam List<Double> ingredientAmountList,
                                    @RequestParam List<Integer> unitIdList,
-                                   @RequestParam List<String> directionsList,
+                                   @RequestParam String directionsString,
                                    Errors errors, Model model) {
 
 //        Check for errors in the new recipe and return those errors.
@@ -127,13 +146,7 @@ public class RecipeController {
 
 //        Create direction objects related to this recipe
 
-//        String[] dirList = directionsList.toString().split(",");
-
-        for (String instruction : directionsList) {
-            newDirections.setRecipe(recipe);
-            newDirections.setInstruction(instruction);
-            directionsRepository.save(newDirections);
-        }
+        addDirectionObj(directionsString, recipe);
 
         for (int i = 0; i < ingredientNameList.size(); i++) {
             newIngredient.setRecipe(recipe);
@@ -208,6 +221,7 @@ public class RecipeController {
                                      @RequestParam int recipeId,
                                      @RequestParam int[] directionIds,
                                      @RequestParam int[] ingredientIds,
+                                     @RequestParam (required = false) String directionsString,
                                      @RequestParam (required = false) String Delete,
                                      Model model, Errors errors) {
 
@@ -218,7 +232,7 @@ public class RecipeController {
             return "/recipe/edit";
         }
 
-        if(Delete != null) {
+        if (Delete != null) {
             int[] recipeIds = {recipeId};
             deleteRecipe(recipeIds);
         }
@@ -227,42 +241,49 @@ public class RecipeController {
         List<Ingredient> ingredientsList = new ArrayList<>();
 
         Optional<Recipe> origRecipe = recipeRepository.findById(recipeId);
-        if (origRecipe.isPresent()) {
-            Recipe recipeHolder = origRecipe.get();
+        Recipe recipeHolder = origRecipe.get();
 
-            for (int i = 0; i < ingredientIds.length; i++) {
-                Optional<Ingredient> origIngredient = ingredientRepository.findById(ingredientIds[i]);
-                Ingredient ingredientHolder = origIngredient.get();
-
-                ingredientHolder.setRecipe(recipeHolder);
-                ingredientHolder.setName(recipe.getIngredients().get(i).getName());
-                ingredientHolder.setAmount(recipe.getIngredients().get(i).getAmount());
-                ingredientHolder.setUnit(recipe.getIngredients().get(i).getUnit());
-
-                ingredientsList.add(ingredientHolder);
-            }
-
-            for (int i = 0; i < directionIds.length; i++) {
-                Optional<Directions> origDirections = directionsRepository.findById(directionIds[i]);
-                Directions directionsHolder = origDirections.get();
-
-                directionsHolder.setRecipe(recipeHolder);
-                directionsHolder.setInstruction(recipe.getDirections().get(i).getInstruction());
-
-                directionsList.add(directionsHolder);
-            }
-
-            recipeHolder.setName(recipe.getName());
-            recipeHolder.setDescription(recipe.getDescription());
-            recipeHolder.setCategories(recipe.getCategories());
-            recipeHolder.setIngredients(ingredientsList);
-            recipeHolder.setDirections(directionsList);
-
-            model.addAttribute("title", "Browse Recipes");
-            model.addAttribute("recipes", recipeRepository.findAll());
-            recipeRepository.save(recipeHolder);
+        if (directionsString != null) {
+            addDirectionObj(directionsString, recipeHolder);
         }
 
+        for (Directions direction : recipe.getDirections()) {
+            directionsList.add(direction);
+        }
+
+        for (int i = 0; i < ingredientIds.length; i++) {
+            Optional<Ingredient> origIngredient = ingredientRepository.findById(ingredientIds[i]);
+            Ingredient ingredientHolder = origIngredient.get();
+
+            ingredientHolder.setRecipe(recipeHolder);
+            ingredientHolder.setName(recipe.getIngredients().get(i).getName());
+            ingredientHolder.setAmount(recipe.getIngredients().get(i).getAmount());
+            ingredientHolder.setUnit(recipe.getIngredients().get(i).getUnit());
+
+            ingredientsList.add(ingredientHolder);
+        }
+
+        for (int i = 0; i < directionIds.length; i++) {
+            Optional<Directions> origDirections = directionsRepository.findById(directionIds[i]);
+            Directions directionsHolder = origDirections.get();
+
+            directionsHolder.setRecipe(recipeHolder);
+            directionsHolder.setInstruction(recipe.getDirections().get(i).getInstruction());
+
+            if (!directionsList.contains(directionsHolder)) {
+                directionsList.add(directionsHolder);
+            }
+        }
+
+        recipeHolder.setName(recipe.getName());
+        recipeHolder.setDescription(recipe.getDescription());
+        recipeHolder.setCategories(recipe.getCategories());
+        recipeHolder.setIngredients(ingredientsList);
+        recipeHolder.setDirections(directionsList);
+
+        model.addAttribute("title", "My Recipes");
+        model.addAttribute("recipes", recipeRepository.findAll());
+        recipeRepository.save(recipeHolder);
         return "/recipe/browse";
     }
 

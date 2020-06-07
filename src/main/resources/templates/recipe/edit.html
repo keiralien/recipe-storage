@@ -57,12 +57,18 @@
     <fieldset class="inputDiv">
         <h3>Directions</h3>
         <label>Directions</label>
-        <button class="actionButton" id="addDirection" name="addDirection" type="button">Add Next Step</button>
-        <ol th:field="*{directions}" th:each="direction, dir : *{directions}">
-            <li><input hidden th:value="${direction.id}" th:name="directionIds"/><!--th:name="|directions[${dir.index}].id|"-->
+        <button class="actionButton"
+                id="addDirection"
+                name="addDirection"
+                type="button"
+                onclick="addAnotherDirection()">Add Another Step</button>
+        <ol id="directionFieldString">
+            <li th:each="direction, dir : *{directions}">
+                <input hidden th:value="${direction.id}" th:name="directionIds"/>
                 <input type="text"
                        th:name="|directions[${dir.index}].instruction|"
-                       th:value="${direction.instruction}"/></li>
+                       th:value="${direction.instruction}"/>
+            </li>
         </ol>
     </fieldset>
 
