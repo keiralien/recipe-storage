@@ -59,14 +59,17 @@
         <label>Directions</label>
         <button id="addDirection" name="addDirection" type="button">Add Row</button>
             <ol id="directionFieldList">
-                <li th:each="direction, dir : ${directionsList}">
-                    <input th:id="|directionsList[${dir.index}]|" th:name="directionsList"/>
+                <li th:for="${directionsList}" th:each="direction, dir : ${directionsList}">
+                    <input th:id="|directionsList[${dir.index}]|"
+                           th:name="directionsList"/>
+<!--                    <input th:id="${directionsList[__${dir.index}__].instruction}" th:name="directionsList"/>-->
                 </li>
             </ol>
         <span th:errors="${directions.instruction}"></span>
     </fieldset>
 
 <input type="submit" value="Create Recipe"/>
+<input type="reset" value="Clear Recipe"/>
 
 </form>
 

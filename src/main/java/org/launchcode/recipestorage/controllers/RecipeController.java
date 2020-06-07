@@ -54,9 +54,11 @@ public class RecipeController {
     }
 
     @PostMapping(params = "addDirection", path = {"/add"})
-    public String addDirection(HttpServletRequest request) {
+    public String addDirection(HttpServletRequest request, Model model) {
         if(ajaxHeaderValue.equals(request.getHeader(ajaxHeaderName))) {
             directionsList.add("");
+            model.addAttribute("directionsList", directionsList);
+            System.out.println("Test Output");
             return "recipe/add::#directionsSection";
         } else {
             return "recipe/add";
@@ -66,7 +68,6 @@ public class RecipeController {
 //    Process the addition of a new recipe and all related information.
     @PostMapping("/add")
     public String processAddRecipe(@ModelAttribute @Valid Recipe newRecipe,
-                                   @ModelAttribute @Valid Directions newDirections,
                                    @ModelAttribute @Valid Ingredient newIngredient,
                                    @RequestParam List<Integer> categories,
                                    @RequestParam List<String> ingredientNameList,
@@ -108,15 +109,19 @@ public class RecipeController {
         Optional<Recipe> recObj = recipeRepository.findById(newRecipe.getId());
         Recipe recipe = recObj.get();
 
-//        Create direction objects related to this recipe
-
-//        String[] dirList = directionsList.toString().split(",");
+//        Create and save direction objects related to this recipe
+        List<Directions> directionsObj = new ArrayList<>();
 
         for (String instruction : directionsList) {
-            newDirections.setRecipe(recipe);
-            newDirections.setInstruction(instruction);
-            directionsRepository.save(newDirections);
+            Directions dirTest = new Directions();
+
+            dirTest.setRecipe(recipe);
+            dirTest.setInstruction(instruction);
+
+            directionsObj.add(dirTest);
         }
+
+        directionsRepository.saveAll(directionsObj);
 
         for (int i = 0; i < ingredientNameList.size(); i++) {
             newIngredient.setRecipe(recipe);
