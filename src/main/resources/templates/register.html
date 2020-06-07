@@ -7,22 +7,23 @@
 
 <div class="pageContent">
     <form method="post">
-        <div class="register-login">
-            <label>Username
-                <input th:field="${registerFormDTO.username}"/>
-            </label>
-            <p class="errors" th:errors="${registerFormDTO.username}"></p>
-        </div>
-        <div class="register-login">
-            <label>Password
-                <input th:field="${registerFormDTO.password}" type="password">
-            </label>
-            <p class="error" th:errors="${registerFormDTO.password}"></p>
-        </div>
-        <div class="register-login">
-            <label>Verify Password
-                <input th:field="${registerFormDTO.verifyPassword}" type="password"/>
-            </label>
+        <div class="formContent">
+            <h3>Welcome!</h3>
+            <p>Create an account to write your recipe book.</p>
+            <div class="register-login">
+                <label class="authLabel">Username</label>
+                <input class="authentication" th:field="${registerFormDTO.username}"/>
+                <p class="errors" th:errors="${registerFormDTO.username}"></p>
+            </div>
+            <div class="register-login">
+                <label class="authLabel">Password</label>
+                <input class="authentication" th:field="${registerFormDTO.password}" type="password">
+                <p class="error" th:errors="${registerFormDTO.password}"></p>
+            </div>
+            <div class="register-login">
+                <label class="authLabel">Verify Password</label>
+                <input class="authentication" th:field="${registerFormDTO.verifyPassword}" type="password"/>
+            </div>
         </div>
 
         <input type="submit" value="Register"/>

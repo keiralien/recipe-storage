@@ -15,16 +15,22 @@
 <body>
 
 <div class="header" th:fragment="navigation">
-    <h1 th:text="${title}"></h1>
-    <div th:if="${title} != 'Log In'">
+    <div th:if="${title} != 'Log In' and ${title} != 'Register'">
         <nav>
             <a th:href="@{/}">Home</a>
-            <a th:href="@{/recipe/browse}">Browse Recipes</a>
+            <a th:href="@{/recipe/browse}">My Recipes</a>
             <a th:href="@{/recipe/add}">Add Recipe</a>
             <a th:href="@{/category/add}">Add Category</a>
             <a th:href="@{/logout}">Logout</a>
         </nav>
     </div>
+    <div th:if="${title} == 'Log In' or ${title} == 'Register'">
+        <nav>
+            <a th:href="@{/login}">Log in</a>
+<!--            <a th:href="@{/register}">Register</a>-->
+        </nav>
+    </div>
+    <h1 th:text="${title}"></h1>
 </div>
 
 </body>

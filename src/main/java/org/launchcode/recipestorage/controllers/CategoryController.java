@@ -44,12 +44,14 @@ public class CategoryController {
             return"/category/add";
         }
         categoryRepository.save(newCategory);
+        model.addAttribute("title","My Categories");
         model.addAttribute("categories", categoryRepository.findAll());
         return "/category/browse";
     }
 
     @GetMapping("/browse")
     public String recipeBrowse (LoginFormDTO loginFormDTO, Model model) {
+        model.addAttribute("title","My Categories");
         model.addAttribute("categories", categoryRepository.findAll());
         return "/category/browse";
     }

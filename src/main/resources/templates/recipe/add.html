@@ -54,16 +54,16 @@
                                 th:value="${unit.id}"/>
                     </select>
 
-                <button id="addIngredient" th:type="button" th:onclick="addAnotherIngredient()">Add Row</button>
+                <button id="addIngredient" th:type="button" th:onclick="addAnotherIngredient()">Add Another Ingredient</button>
             </th:block>
         </fieldset>
     <!--    <span th:errors="${unit.abbreviation}"></span>-->
 
     <!--    DIRECTIONS-->
         <fieldset id="directionsSection" class="inputDiv">
-            <h3>Directions:</h3>
+            <h3>Directions</h3>
             <label>Add Directions</label>
-            <button class="actionButton" id="addDirection" name="addDirection" type="button">Add More Directions</button>
+            <button class="actionButton" id="addDirection" name="addDirection" type="button">Add Another Step</button>
                 <ol id="directionFieldList">
                     <li th:each="direction, dir : ${directionsList}">
                         <input th:id="|directionsList[${dir.index}]|" th:name="directionsList"/>

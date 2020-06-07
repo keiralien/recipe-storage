@@ -49,7 +49,7 @@
                         th:value="${unit.id}"
                         th:selected="${unit.id == ingredient.unit.id}"/>
             </select>
-            <button id="addIngredient" th:type="button" th:onclick="addAnotherIngredient()">Add Row</button>
+            <button id="addIngredient" th:type="button" th:onclick="addAnotherIngredient()">Add Another Ingredient</button>
         </th:block>
     </fieldset>
 
@@ -57,18 +57,20 @@
     <fieldset class="inputDiv">
         <h3>Directions</h3>
         <label>Directions</label>
+        <button class="actionButton" id="addDirection" name="addDirection" type="button">Add Next Step</button>
         <ol th:field="*{directions}" th:each="direction, dir : *{directions}">
             <li><input hidden th:value="${direction.id}" th:name="directionIds"/><!--th:name="|directions[${dir.index}].id|"-->
                 <input type="text"
                        th:name="|directions[${dir.index}].instruction|"
                        th:value="${direction.instruction}"/></li>
-            <button id="addDirection1" th:type="button" th:onclick="addAnotherDirection()">Add Row</button>
         </ol>
     </fieldset>
 
     <input type="hidden" th:value="*{id}" name="recipeId"/>
 
-    <input type="submit" value="Save Changes"/>
+    <input type="submit" value="Save Changes" name="Save"/>
+    <a class="editDeleteLinks" th:href="@{/recipe/browse}">Cancel</a>
+    <input type="submit" value="Delete Recipe" name="Delete"/>
 
     </form>
 </div>

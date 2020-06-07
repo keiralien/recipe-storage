@@ -38,6 +38,21 @@ public class RecipeController {
     private static final String ajaxHeaderName = "X-Requested-With";
     private static final String ajaxHeaderValue = "XMLHttpRequest";
 
+    private void deleteRecipe (int[] recipeIds) {
+        for (int i = 0; i < recipeIds.length; i++) {
+            Optional<Recipe> origRecipe = recipeRepository.findById(recipeIds[i]);
+            Recipe recipe = origRecipe.get();
+
+            for (Ingredient ingredient : recipe.getIngredients()) {
+                ingredientRepository.deleteById(ingredient.getId());
+            }
+            for (Directions direction : recipe.getDirections()) {
+                directionsRepository.deleteById(direction.getId());
+            }
+            recipeRepository.deleteById(recipeIds[i]);
+        }
+    }
+
 //    Return the Add Recipe page passing in page title, existing category and unit information,
 //    and the models for mapping new records.
     @GetMapping("/add")
@@ -139,26 +154,38 @@ public class RecipeController {
 //  View a list of all recipes
     @GetMapping("/browse")
     public String displayRecipeBrowse (Model model) {
-        model.addAttribute("title", "Browse Recipes");
+        model.addAttribute("title", "My Recipes");
         model.addAttribute("recipes", recipeRepository.findAll());
         return "/recipe/browse";
     }
 
+//
     @GetMapping("/view/{recipeId}")
-    public String displayRecipeView (Model model, @PathVariable int recipeId) {
+    public String displayRecipeView (@PathVariable int recipeId, Model model) {
         Optional<Recipe> optRecipe = recipeRepository.findById(recipeId);
         if (optRecipe.isPresent()) {
             Recipe recipe = (Recipe) optRecipe.get();
             model.addAttribute("recipe", recipe);
             model.addAttribute("title",recipe.getName());
-            return "recipe/view";
+            return "/recipe/view";
         } else {
             return "redirect:../";
         }
     }
 
+    @PostMapping("/view/{recipeId}")
+    public String processRecipeView (@RequestParam int recipeId,
+                                     Model model) {
+        int[] recipeIds = {recipeId};
+        deleteRecipe(recipeIds);
+
+        model.addAttribute("title","My Recipes");
+        model.addAttribute("recipes", recipeRepository.findAll());
+        return "/recipe/browse";
+    }
+
     @GetMapping("/edit/{recipeId}")
-    public String displayRecipeEdit (Model model, @PathVariable int recipeId) {
+    public String displayRecipeEdit (@PathVariable int recipeId, Model model) {
         model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute("units", unitRepository.findAll());
 
@@ -167,8 +194,8 @@ public class RecipeController {
         if (optRecipe.isPresent()) {
             Recipe recipe = (Recipe) optRecipe.get();
             model.addAttribute("recipe", recipe);
-            model.addAttribute("title", "Edit: " + recipe.getName());
-            return "recipe/edit";
+            model.addAttribute("title", "Editing:  " + recipe.getName());
+            return "/recipe/edit";
         } else{
             return "redirect:../";
         }
@@ -177,18 +204,25 @@ public class RecipeController {
     @PostMapping("/edit/{recipeId}")
     public String processRecipeEdit (@ModelAttribute @Valid Recipe recipe,
                                      @ModelAttribute @Valid Directions directions,
-                                     @ModelAttribute @Valid Ingredient ingredient,
+                                     @ModelAttribute @Valid Ingredient ingredients,
                                      @RequestParam int recipeId,
                                      @RequestParam int[] directionIds,
                                      @RequestParam int[] ingredientIds,
+                                     @RequestParam (required = false) String Delete,
                                      Model model, Errors errors) {
 
         if (errors.hasErrors()) {
-            model.addAttribute("title", "Edit " + recipe.getName());
+            model.addAttribute("title", "Editing:  " + recipe.getName());
             model.addAttribute("categories", categoryRepository.findAll());
             model.addAttribute("units", unitRepository.findAll());
             return "/recipe/edit";
         }
+
+        if(Delete != null) {
+            int[] recipeIds = {recipeId};
+            deleteRecipe(recipeIds);
+        }
+
         List<Directions> directionsList = new ArrayList<>();
         List<Ingredient> ingredientsList = new ArrayList<>();
 
@@ -228,6 +262,7 @@ public class RecipeController {
             model.addAttribute("recipes", recipeRepository.findAll());
             recipeRepository.save(recipeHolder);
         }
+
         return "/recipe/browse";
     }
 
@@ -239,21 +274,12 @@ public class RecipeController {
     }
 
     @PostMapping("/delete")
-    public String processDeleteRecipe(@RequestParam(required = false) int[] recipeIds, Model model) {
+    public String processDeleteRecipe(@RequestParam(required = false) int[] recipeIds,
+                                      Model model) {
         if(recipeIds != null) {
-            for (int i = 0; i < recipeIds.length; i++) {
-                Optional<Recipe> origRecipe = recipeRepository.findById(recipeIds[i]);
-                Recipe recipe = origRecipe.get();
-
-                for (Ingredient ingredient : recipe.getIngredients()) {
-                    ingredientRepository.deleteById(ingredient.getId());
-                }
-                for (Directions direction : recipe.getDirections()) {
-                    directionsRepository.deleteById(direction.getId());
-                }
-                recipeRepository.deleteById(recipeIds[i]);
-            }
+            deleteRecipe(recipeIds);
         }
+
         model.addAttribute("title", "Browse Recipes");
         model.addAttribute("recipes", recipeRepository.findAll());
         return "/recipe/browse";

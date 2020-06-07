@@ -6,7 +6,7 @@
 <div th:replace="fragments :: navigation"></div>
 
 <div class="pageContent">
-    <a th:href="@{/recipe/delete}">Delete Recipes</a>
+    <a class="editDeleteLinks" id="delete" th:href="@{/recipe/delete}">Mark Recipes for Deletion</a>
 
     <ul th:each="recipe : ${recipes}">
         <li>

@@ -8,12 +8,15 @@
 
 <div class="pageContent">
     <form method="post">
-        <label>Select Recipes for Deletion:</label>
-        <th:block th:each="recipe : ${recipes}">
-            <input type="checkbox" name="recipeIds" th:value="${recipe.id}">
-            <span th:text="${recipe.name}"></span>
-        </th:block>
+        <label>Select one or more recipes for deletion:</label>
+        <ul th:each="recipe : ${recipes}">
+            <ol>
+                <input type="checkbox" name="recipeIds" th:value="${recipe.id}">
+                <label th:text="${recipe.name}"></label>
+            </ol>
+        </ul>
         <input type="submit" value="Delete">
+        <a class="editDeleteLinks" th:href="@{/recipe/browse}">Cancel</a>
     </form>
 </div>
 
