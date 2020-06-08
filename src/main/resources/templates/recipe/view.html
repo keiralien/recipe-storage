@@ -27,7 +27,7 @@
     </ol>
 
     <!--<h3>Servings</h3>-->
-    <a class="editDeleteLinks" th:href="@{'/recipe/edit/' + ${recipe.id}}">Edit Recipe</a>
+    <a class="buttonLinks" th:href="@{'/recipe/edit/' + ${recipe.id}}">Edit Recipe</a>
     <form method="post" action="delete" th:object="${recipe}">
         <input type="hidden" th:value="*{id}" name="recipeId"/>
         <input type="submit" value="Delete Recipe" name="Delete"/>

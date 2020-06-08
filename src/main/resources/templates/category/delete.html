@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body>
+
+<div th:replace="fragments :: navigation"></div>
+
+<div class="pageContent">
+    <form method="post">
+        <label>Select one or more categories for deletion:</label>
+        <ul th:each="category : ${categories}">
+            <ol>
+                <input type="checkbox" name="categoryIds" th:value="${category.id}">
+                <label th:text="${category.name}"></label>
+            </ol>
+        </ul>
+        <input type="submit" value="Delete Selected">
+        <a class="buttonLinks" th:href="@{/category/add}">Cancel</a>
+    </form>
+
+</div>
+
+</body>
+</html>

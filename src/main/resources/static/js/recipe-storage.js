@@ -25,14 +25,20 @@ window.addEventListener("load", function() {
         directionFieldString.appendChild(li);
     }
 
-    document.addEventListener("DOMContentLoaded", function() {addAnotherIngredient()});
     let ingredient = document.getElementById("addIngredient");
     ingredient.addEventListener("click", function() {
         addAnotherIngredient();
     });
 
     let direction = document.getElementById("addDirection");
-    direction.addEventListener("click", function() {addAnotherDirection()});
+    direction.addEventListener("click", function() {
+        addAnotherDirection();
+    });
+
+    let edit = document.getElementById("ingredientLineEdit");
+    if (edit != null) {
+        addAnotherIngredient();
+    }
 });
 
 

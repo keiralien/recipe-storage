@@ -6,18 +6,32 @@
 <div th:replace="fragments :: navigation"></div>
 
 <div class="pageContent">
-    <p>Add custom categories to classify recipes.</p>
+    <p>Add custom categories to improve recipe searching.</p>
 
-    <h5 th:if="${message}" th:text="${message}"></h5>
 
-    <form method="post">
-        <label>Category
-            <input th:field="${category.name}"/>
-            <span th:errors="${category.name}"></span>
-        </label>
+
+    <form method="post" >
+        <label>Category</label>
+        <input th:field="${category.name}"/>
+        <span th:errors="${category.name}"></span>
 
         <input type="submit" value="Add Category"/>
     </form>
+    <p class="alert" th:if="${message}" th:text="${message}"></p>
+
+    <a class="buttonLinks" th:href="@{/category/delete}">Mark Categories for Removal</a>
+    <br>
+    <h4>Existing Categories (Default)</h4>
+    <ul class="categoryColumn" th:each="category : ${categories}">
+        <li>
+            <a th:text="${category.name}"></a>
+        </li>
+    </ul>
+
+    <h4>My Categories</h4>
+    <ul>
+
+    </ul>
 </div>
 
 </body>

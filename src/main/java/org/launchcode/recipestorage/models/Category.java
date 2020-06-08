@@ -1,5 +1,6 @@
 package org.launchcode.recipestorage.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import java.util.ArrayList;
