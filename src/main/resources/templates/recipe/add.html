@@ -38,24 +38,30 @@
     <!--    INGREDIENTS-->
         <fieldset id="ingredientSection" class="inputDiv">
             <h3>Ingredients</h3>
-            <th:block id="ingredientBlock">
-                <label>Ingredient</label>
-                    <input th:type="text" th:name="ingredientNameList"/>
-                <span th:errors="${ingredient.name}"></span>
+            <button id="addIngredient" th:type="button">Add Another Ingredient</button>
+            <ul class="ingredientBlock" th:each="ingredient, ing : ${ingredientNameList}">
+                <li class="ingredientLine" style="display:none" th:id="'ingredientList' + ${ing.index}">
+                    <label>Ingredient</label>
+                    <input th:id="|name[${ing.index}]|"
+                           th:name="ingredientNameList"/>
+<!--                        <input th:type="text" th:name="ingredientNameString"/>-->
+                    <span th:errors="${ingredient.name}"></span>
 
-                <label>Amount</label>
-                    <input th:name="ingredientAmountList"/>
-                <span th:errors="${ingredient.amount}"></span>
+                    <label>Amount</label>
+                    <input th:id="|amount[${ing.index}]|"
+                           th:name="ingredientAmountList"/>
+<!--                        <input th:name="ingredientAmountString"/>-->
+                    <span th:errors="${ingredient.amount}"></span>
 
-                <label th:for="units">Unit</label>
-                    <select th:name="unitIdList">
-                        <option th:each="unit : ${units}"
-                                th:text="${unit.abbreviation}"
-                                th:value="${unit.id}"/>
-                    </select>
-
-                <button id="addIngredient" th:type="button" th:onclick="addAnotherIngredient()">Add Another Ingredient</button>
-            </th:block>
+                    <label th:for="units">Unit</label>
+                        <select id="unitId" th:name="unitIdList">
+                            <option th:each="unit : ${units}"
+                                    th:text="${unit.abbreviation}"
+                                    th:value="${unit.id}"/>
+                        </select>
+                    </label>
+                </li>
+            </ul>
         </fieldset>
     <!--    <span th:errors="${unit.abbreviation}"></span>-->
 
@@ -66,8 +72,7 @@
             <button class="actionButton"
                     id="addDirection"
                     name="addDirection"
-                    type="button"
-                    onclick="addAnotherDirection()">Add Another Step</button>
+                    type="button">Add Another Step</button>
                 <ol id="directionFieldString">
                     <li id="directionStringItem">
                         <input th:id="directionsString" th:name="directionsString"/>

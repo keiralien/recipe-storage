@@ -139,7 +139,7 @@ li a:hover {
     color: white;
     border: none;
     border-radius: 3px;
-    padding: 1em 2em;
+    padding: .75em 1.75em;
     font-family: 'Lora';
     font-size: 15px;
     }
@@ -157,6 +157,10 @@ li a:hover {
     width: 100%;
     background-color: #F7C331;
     color: white;
+    }
+
+ingredientBlock li {
+    display: none;
     }
 
 .inputDiv {
@@ -182,6 +186,7 @@ li a:hover {
     top: 3em;
     left: 20em;
     }
+
 
     {
     nav #6B7A8F

@@ -33,8 +33,6 @@ public class RecipeController {
     @Autowired
     private UnitRepository unitRepository;
 
-    private List<String> directionsList = new ArrayList<>();
-
     private static final String ajaxHeaderName = "X-Requested-With";
     private static final String ajaxHeaderValue = "XMLHttpRequest";
 
@@ -49,12 +47,27 @@ public class RecipeController {
         }
     }
 
-    private void adIngredientObj (String ingredientNameString,
-                                  String ingredientAmountString,
-                                  String ingredientUnitString,
-                                  Recipe recipe) {
+    private void addIngredientObj (List<String> ingredientNameList,
+                                   List<Double> ingredientAmountList,
+                                   List<Integer> unitIdList,
+                                   Recipe recipe) {
 
+        for (int i = 0; i < ingredientNameList.size()-1; i++) {
+            Ingredient newIngredient = new Ingredient();
 
+            Optional<Unit> unitObj = unitRepository.findById(unitIdList.get(i));
+            Unit unit = unitObj.get();
+
+            if(!ingredientNameList.get(i).equals("")
+                    && !ingredientNameList.get(i).equals(" ")
+                    && ingredientAmountList.get(i) != null) {
+                newIngredient.setName(ingredientNameList.get(i));
+                newIngredient.setAmount(ingredientAmountList.get(i));
+                newIngredient.setUnit(unit);
+                newIngredient.setRecipe(recipe);
+                ingredientRepository.save(newIngredient);
+            }
+        }
     }
 
     private void deleteRecipe (int[] recipeIds) {
@@ -76,17 +89,16 @@ public class RecipeController {
 //    and the models for mapping new records.
     @GetMapping("/add")
     public String displayAddRecipe(Model model) {
-        directionsList.add("");
         model.addAttribute("title", "Add Recipe");
         model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute("units", unitRepository.findAll());
-        model.addAttribute("directionsList", directionsList);
         model.addAttribute(new Recipe());
-        model.addAttribute(new Directions());
-        model.addAttribute(new Ingredient());
+//        model.addAttribute(new Directions());
+//        model.addAttribute(new Ingredient());
         return "recipe/add";
     }
 
+//    AJAX ATTEMPT
 //    @PostMapping(params = "addDirection", path = {"/add"})
 //    public String addDirection(
 //            Model model, HttpServletRequest request) {
@@ -103,7 +115,7 @@ public class RecipeController {
     @PostMapping("/add")
     public String processAddRecipe(@ModelAttribute @Valid Recipe newRecipe,
 //                                   @ModelAttribute @Valid Directions newDirections,
-                                   @ModelAttribute @Valid Ingredient newIngredient,
+//                                   @ModelAttribute @Valid Ingredient newIngredient,
                                    @RequestParam List<Integer> categories,
                                    @RequestParam List<String> ingredientNameList,
                                    @RequestParam List<Double> ingredientAmountList,
@@ -112,6 +124,7 @@ public class RecipeController {
                                    Errors errors, Model model) {
 
 //        Check for errors in the new recipe and return those errors.
+
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Recipe");
             model.addAttribute("categories", categoryRepository.findAll());
@@ -144,22 +157,11 @@ public class RecipeController {
         Optional<Recipe> recObj = recipeRepository.findById(newRecipe.getId());
         Recipe recipe = recObj.get();
 
+//        Create ingredient objects related to this recipe
+        addIngredientObj(ingredientNameList, ingredientAmountList, unitIdList, recipe);
+
 //        Create direction objects related to this recipe
-
         addDirectionObj(directionsString, recipe);
-
-        for (int i = 0; i < ingredientNameList.size(); i++) {
-            newIngredient.setRecipe(recipe);
-            newIngredient.setName(ingredientNameList.get(i));
-            newIngredient.setAmount(ingredientAmountList.get(i));
-
-            Optional<Unit> unitObj = unitRepository.findById(unitIdList.get(i));
-            Unit unit = unitObj.get();
-            newIngredient.setUnit(unit);
-
-            ingredientRepository.save(newIngredient);
-        }
-
         model.addAttribute("recipes", recipeRepository.findAll());
         return "/recipe/browse";
     }
