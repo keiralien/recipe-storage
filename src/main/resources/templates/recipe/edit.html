@@ -36,21 +36,52 @@
     <!--    INGREDIENTS-->
     <fieldset class="inputDiv">
         <h3>Ingredients</h3>
-        <label>Ingredient</label>
-        <th:block th:field="*{ingredients}" th:each="ingredient, ing : *{ingredients}">
-            <input hidden th:name="ingredientIds" th:value="${ingredient.id}"/> <!--"|ingredients[${ing.index}].id|"-->
-            <input th:name="|ingredients[${ing.index}].name|" th:value="${ingredient.name}"/>
+        <button id="addIngredient" th:type="button">Add Another Ingredient</button>
 
-            <input th:name="|ingredients[${ing.index}].amount|" th:value="${ingredient.amount}"/>
+<!--        EXISTING Ingredients-->
+        <ul class="ingredientBlock" th:field="*{ingredients}" th:each="ingredient, ing : *{ingredients}">
+            <li class="ingredientLineEdit" th:if="${ingredient.id}">
+                <label>Ingredient</label>
+                <input hidden th:name="ingredientIds" th:value="${ingredient.id}"/>
+                <input th:name="|ingredients[${ing.index}].name|" th:value="${ingredient.name}"/>
 
-            <select th:name="|ingredients[${ing.index}].unit|">
-                <option th:each="unit : ${units}"
-                        th:text="${unit.abbreviation}"
-                        th:value="${unit.id}"
-                        th:selected="${unit.id == ingredient.unit.id}"/>
-            </select>
-            <button id="addIngredient" th:type="button" th:onclick="addAnotherIngredient()">Add Another Ingredient</button>
-        </th:block>
+                <label>Amount</label>
+                <input th:name="|ingredients[${ing.index}].amount|" th:value="${ingredient.amount}"/>
+
+                <label>Unit</label>
+                <select th:name="|ingredients[${ing.index}].unit|">
+                    <option th:each="unit : ${units}"
+                            th:text="${unit.abbreviation}"
+                            th:value="${unit.id}"
+                            th:selected="${unit.id == ingredient.unit.id}"/>
+                </select>
+            </li>
+        </ul>
+<!--        NEW Ingredients-->
+        <ul class="ingredientBlock" th:each="ingredient, ing : ${ingredientNameList}">
+            <li class="ingredientLine" style="display:none" th:id="'ingredientList' + ${ing.index}">
+
+                <label>Ingredient</label>
+                <input th:id="|name[${ing.index}]|"
+                       th:name="ingredientNameList"/>
+                <span th:errors="${ingredient.name}"></span>
+
+                <label>Amount</label>
+                <input th:id="|amount[${ing.index}]|"
+                       th:name="ingredientAmountList"/>
+                <span th:errors="${ingredient.amount}"></span>
+
+                <label th:for="units">Unit</label>
+                <select id="unitId" th:name="unitIdList">
+                    <option th:each="unit : ${units}"
+                            th:text="${unit.abbreviation}"
+                            th:value="${unit.id}"/>
+                </select>
+<!--                <span th:errors="${unit.abbreviation}"></span>-->
+
+            </li>
+        </ul>
+
     </fieldset>
 
     <!--    DIRECTIONS-->

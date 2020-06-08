@@ -159,10 +159,6 @@ li a:hover {
     color: white;
     }
 
-ingredientBlock li {
-    display: none;
-    }
-
 .inputDiv {
     padding: 1em 0em 1em 0em;
     }

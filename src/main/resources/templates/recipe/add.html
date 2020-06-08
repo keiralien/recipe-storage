@@ -41,16 +41,15 @@
             <button id="addIngredient" th:type="button">Add Another Ingredient</button>
             <ul class="ingredientBlock" th:each="ingredient, ing : ${ingredientNameList}">
                 <li class="ingredientLine" style="display:none" th:id="'ingredientList' + ${ing.index}">
+
                     <label>Ingredient</label>
                     <input th:id="|name[${ing.index}]|"
                            th:name="ingredientNameList"/>
-<!--                        <input th:type="text" th:name="ingredientNameString"/>-->
                     <span th:errors="${ingredient.name}"></span>
 
                     <label>Amount</label>
                     <input th:id="|amount[${ing.index}]|"
                            th:name="ingredientAmountList"/>
-<!--                        <input th:name="ingredientAmountString"/>-->
                     <span th:errors="${ingredient.amount}"></span>
 
                     <label th:for="units">Unit</label>
@@ -59,11 +58,11 @@
                                     th:text="${unit.abbreviation}"
                                     th:value="${unit.id}"/>
                         </select>
-                    </label>
+<!--                    <span th:errors="${unit.abbreviation}"></span>-->
+
                 </li>
             </ul>
         </fieldset>
-    <!--    <span th:errors="${unit.abbreviation}"></span>-->
 
     <!--    DIRECTIONS-->
         <fieldset id="directionsSection" class="inputDiv">

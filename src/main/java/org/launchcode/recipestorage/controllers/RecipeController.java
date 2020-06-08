@@ -40,10 +40,12 @@ public class RecipeController {
         String[] directionsList = directionsString.split(",");
 
         for (String instruction : directionsList) {
-            Directions newDirections = new Directions();
-            newDirections.setRecipe(recipe);
-            newDirections.setInstruction(instruction.trim());
-            directionsRepository.save(newDirections);
+            if(!instruction.equals("") && !instruction.equals(" ")) {
+                Directions newDirections = new Directions();
+                newDirections.setRecipe(recipe);
+                newDirections.setInstruction(instruction.trim());
+                directionsRepository.save(newDirections);
+            }
         }
     }
 
@@ -85,16 +87,39 @@ public class RecipeController {
         }
     }
 
+    private List<String> generateNameList () {
+        List<String> ingredientNameList = new ArrayList<>();
+
+        for (int i = 0; i <= 15; i++) {
+            ingredientNameList.add("");
+        }
+        return ingredientNameList;
+    }
+
+    private List<Double> generateAmounList() {
+        List<Double> ingredientAmountList = new ArrayList<>();
+
+        for (int i = 0; i <= 15; i++) {
+            ingredientAmountList.add(0.0);
+        }
+        return ingredientAmountList;
+    }
+
 //    Return the Add Recipe page passing in page title, existing category and unit information,
 //    and the models for mapping new records.
     @GetMapping("/add")
     public String displayAddRecipe(Model model) {
+        List<String> ingredientNameList = generateNameList();
+        List<Double> ingredientAmountList = generateAmounList();
+
         model.addAttribute("title", "Add Recipe");
         model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute("units", unitRepository.findAll());
+        model.addAttribute("ingredientNameList", ingredientNameList);
+        model.addAttribute("ingredientAmountList", ingredientAmountList);
         model.addAttribute(new Recipe());
-//        model.addAttribute(new Directions());
-//        model.addAttribute(new Ingredient());
+        model.addAttribute(new Directions());
+        model.addAttribute(new Ingredient());
         return "recipe/add";
     }
 
@@ -124,7 +149,6 @@ public class RecipeController {
                                    Errors errors, Model model) {
 
 //        Check for errors in the new recipe and return those errors.
-
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Recipe");
             model.addAttribute("categories", categoryRepository.findAll());
@@ -201,8 +225,15 @@ public class RecipeController {
 
     @GetMapping("/edit/{recipeId}")
     public String displayRecipeEdit (@PathVariable int recipeId, Model model) {
+        List<String> ingredientNameList = generateNameList();
+        List<Double> ingredientAmountList = generateAmounList();
+
+        model.addAttribute("ingredientNameList", ingredientNameList);
+        model.addAttribute("ingredientAmountList", ingredientAmountList);
         model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute("units", unitRepository.findAll());
+        model.addAttribute(new Ingredient());
+        model.addAttribute(new Directions());
 
         Optional<Recipe> optRecipe = recipeRepository.findById(recipeId);
 
@@ -210,7 +241,7 @@ public class RecipeController {
             Recipe recipe = (Recipe) optRecipe.get();
             model.addAttribute("recipe", recipe);
             model.addAttribute("title", "Editing:  " + recipe.getName());
-            return "/recipe/edit";
+            return "recipe/edit";
         } else{
             return "redirect:../";
         }
@@ -218,12 +249,15 @@ public class RecipeController {
 
     @PostMapping("/edit/{recipeId}")
     public String processRecipeEdit (@ModelAttribute @Valid Recipe recipe,
-                                     @ModelAttribute @Valid Directions directions,
-                                     @ModelAttribute @Valid Ingredient ingredients,
+//                                     @ModelAttribute @Valid Directions directions,
+//                                     @ModelAttribute @Valid Ingredient ingredients,
                                      @RequestParam int recipeId,
                                      @RequestParam int[] directionIds,
                                      @RequestParam int[] ingredientIds,
                                      @RequestParam (required = false) String directionsString,
+                                     @RequestParam (required = false) List<String> ingredientNameList,
+                                     @RequestParam (required = false) List<Double> ingredientAmountList,
+                                     @RequestParam (required = false) List<Integer> unitIdList,
                                      @RequestParam (required = false) String Delete,
                                      Model model, Errors errors) {
 
@@ -249,8 +283,14 @@ public class RecipeController {
             addDirectionObj(directionsString, recipeHolder);
         }
 
+        addIngredientObj(ingredientNameList, ingredientAmountList, unitIdList, recipeHolder);
+
         for (Directions direction : recipe.getDirections()) {
             directionsList.add(direction);
+        }
+
+        for (Ingredient ingredient : recipe.getIngredients()) {
+            ingredientsList.add(ingredient);
         }
 
         for (int i = 0; i < ingredientIds.length; i++) {
@@ -262,7 +302,9 @@ public class RecipeController {
             ingredientHolder.setAmount(recipe.getIngredients().get(i).getAmount());
             ingredientHolder.setUnit(recipe.getIngredients().get(i).getUnit());
 
-            ingredientsList.add(ingredientHolder);
+            if (!ingredientsList.contains(ingredientHolder)) {
+                ingredientsList.add(ingredientHolder);
+            }
         }
 
         for (int i = 0; i < directionIds.length; i++) {
@@ -282,10 +324,10 @@ public class RecipeController {
         recipeHolder.setCategories(recipe.getCategories());
         recipeHolder.setIngredients(ingredientsList);
         recipeHolder.setDirections(directionsList);
+        recipeRepository.save(recipeHolder);
 
         model.addAttribute("title", "My Recipes");
         model.addAttribute("recipes", recipeRepository.findAll());
-        recipeRepository.save(recipeHolder);
         return "/recipe/browse";
     }
 
