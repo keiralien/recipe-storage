@@ -252,8 +252,8 @@ public class RecipeController {
 //                                     @ModelAttribute @Valid Directions directions,
 //                                     @ModelAttribute @Valid Ingredient ingredients,
                                      @RequestParam int recipeId,
-                                     @RequestParam int[] directionIds,
-                                     @RequestParam int[] ingredientIds,
+                                     @RequestParam (required = false) int[] directionIds,
+                                     @RequestParam (required = false) int[] ingredientIds,
                                      @RequestParam (required = false) String directionsString,
                                      @RequestParam (required = false) List<String> ingredientNameList,
                                      @RequestParam (required = false) List<Double> ingredientAmountList,
@@ -293,29 +293,33 @@ public class RecipeController {
             ingredientsList.add(ingredient);
         }
 
-        for (int i = 0; i < ingredientIds.length; i++) {
-            Optional<Ingredient> origIngredient = ingredientRepository.findById(ingredientIds[i]);
-            Ingredient ingredientHolder = origIngredient.get();
+        if (ingredientIds != null) {
+            for (int i = 0; i < ingredientIds.length; i++) {
+                Optional<Ingredient> origIngredient = ingredientRepository.findById(ingredientIds[i]);
+                Ingredient ingredientHolder = origIngredient.get();
 
-            ingredientHolder.setRecipe(recipeHolder);
-            ingredientHolder.setName(recipe.getIngredients().get(i).getName());
-            ingredientHolder.setAmount(recipe.getIngredients().get(i).getAmount());
-            ingredientHolder.setUnit(recipe.getIngredients().get(i).getUnit());
+                ingredientHolder.setRecipe(recipeHolder);
+                ingredientHolder.setName(recipe.getIngredients().get(i).getName());
+                ingredientHolder.setAmount(recipe.getIngredients().get(i).getAmount());
+                ingredientHolder.setUnit(recipe.getIngredients().get(i).getUnit());
 
-            if (!ingredientsList.contains(ingredientHolder)) {
-                ingredientsList.add(ingredientHolder);
+                if (!ingredientsList.contains(ingredientHolder)) {
+                    ingredientsList.add(ingredientHolder);
+                }
             }
         }
 
-        for (int i = 0; i < directionIds.length; i++) {
-            Optional<Directions> origDirections = directionsRepository.findById(directionIds[i]);
-            Directions directionsHolder = origDirections.get();
+        if (directionIds != null) {
+            for (int i = 0; i < directionIds.length; i++) {
+                Optional<Directions> origDirections = directionsRepository.findById(directionIds[i]);
+                Directions directionsHolder = origDirections.get();
 
-            directionsHolder.setRecipe(recipeHolder);
-            directionsHolder.setInstruction(recipe.getDirections().get(i).getInstruction());
+                directionsHolder.setRecipe(recipeHolder);
+                directionsHolder.setInstruction(recipe.getDirections().get(i).getInstruction());
 
-            if (!directionsList.contains(directionsHolder)) {
-                directionsList.add(directionsHolder);
+                if (!directionsList.contains(directionsHolder)) {
+                    directionsList.add(directionsHolder);
+                }
             }
         }
 
