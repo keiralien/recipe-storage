@@ -6,7 +6,7 @@
 <div th:replace="fragments :: navigation"></div>
 
 <div class="pageContent">
-    <form method="post">
+    <form method="post" id="deleteCheck">
         <label>Select one or more categories for deletion:</label>
         <ul th:each="category : ${categories}">
             <ol>

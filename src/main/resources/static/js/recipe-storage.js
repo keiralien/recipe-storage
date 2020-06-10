@@ -25,21 +25,51 @@ window.addEventListener("load", function() {
         directionFieldString.appendChild(li);
     }
 
+    function modifyVerification() {
+        let typeCheck = document.querySelector("input[name='Save']");
+        let confirmation;
+        console.log(typeCheck);
+
+        if (typeCheck.value !== null) {
+            confirmation = window.confirm("Save changes?");
+        } else {
+            confirmation = window.confirm("Confirm deletion?");
+        }
+
+        if(confirmation) {
+            modifyButton.submit();
+        };
+    }
+
     let ingredient = document.getElementById("addIngredient");
-    ingredient.addEventListener("click", function() {
-        addAnotherIngredient();
-    });
+    if(ingredient !== null) {
+        ingredient.addEventListener("click", function() {
+            addAnotherIngredient();
+        });
+    }
 
     let direction = document.getElementById("addDirection");
-    direction.addEventListener("click", function() {
-        addAnotherDirection();
-    });
+    if(direction !== null) {
+        direction.addEventListener("click", function() {
+            addAnotherDirection();
+        });
+   }
 
     let edit = document.getElementById("ingredientLineEdit");
-    if (edit != null) {
+    if (edit !== null) {
         addAnotherIngredient();
     }
+
+    let modifyButton = document.getElementById("modifyCheck");
+    if (modifyButton !== null) {
+        modifyButton.addEventListener("submit", event => {
+        event.preventDefault();
+        if (modifyButton )
+        modifyVerification();
+        });
+    }
 });
+
 
 
 //    JQUERY
