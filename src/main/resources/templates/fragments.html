@@ -22,6 +22,12 @@
             <a th:href="@{/recipe/add}">Add Recipe</a>
             <a th:href="@{/category/add}">Manage Category</a>
             <a th:href="@{/logout}">Logout</a>
+            <form method="post" action="/" class="search">
+<!--                <div class="inputDiv">-->
+                    <input  type="text" name="searchTerm" id="searchTerm"/>
+                    <input type="submit" value="Search"/>
+<!--                </div>-->
+            </form>
         </nav>
     </div>
     <div th:if="${title} == 'Log In' or ${title} == 'Register'">

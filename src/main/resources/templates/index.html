@@ -3,30 +3,21 @@
 <head th:replace="fragments :: head"></head>
 <body>
 
-<div th:replace="fragments :: navigation"></div>
-
 <div class="pageContent">
 
-    <!--SEARCH FORM-->
-    <form method="post">
-        <div class="inputDiv">
-            <h3>Recipe Search</h3>
-            <label for="searchTerm" class="inputLabel">Term</label>
-            <input type="text" name="searchTerm" id="searchTerm"/>
-        </div>
-        <div>
-            <label class="inputLabel">Type</label>
-            <p th:each="field : ${fieldTypes}">
-            <input type="radio"
-                   name="fieldType"
-                   th:id="${field.key}"
-                   th:value="${field.key}"
-                   th:checked="${field.key == 'all'}"/>
-            <label th:for="${field.key}" th:text="${field.value}"></label>
-            </p>
-        </div>
-        <input type="submit" value="Search" />
-    </form>
+    <div th:replace="fragments :: navigation"></div>
+
+    <h3>Random Recipe:</h3>
+    <a>recipe placeholder</a>
+
+    <div>
+        <h3>Browse by Category</h3>
+        <ul>
+            <li th:each="category : ${categories}">
+                <a th:text="${category.name}"></a>
+            </li>
+        </ul>
+    </div>
 
     <!--SEARCH RESULTS-->
     <div>

@@ -1,5 +1,7 @@
 body {
-    margin: 0;
+    margin: auto;
+    width: 85%;
+    position: relative;
     font-family: 'Lora';
     font-size: 15px;
     background-color: #e8e0d5;
@@ -179,11 +181,15 @@ li a:hover {
 
 .pageContent {
     padding: 0em 2em 0em 2em;
-    position: relative;
     }
 
 .register-login {
     padding: .25em 0em .25em 0em;
+    }
+
+.search {
+    position: relative;
+    display: inline;
     }
 
 #delete {
@@ -192,9 +198,30 @@ li a:hover {
     left: 20em;
     }
 
+#modifyCheck {
+    display: inline;
+    }
+
+#searchTerm {
+    background-color: #6B7A8F;
+    border: .25em solid #c5cdd9;
+    border-radius: 3px;
+    height: 2.25em;
+    width: 16em;
+    }
+
+#searchTerm:hover {
+    background-color: #7f8fa3;
+    }
+
+#searchTerm:focus {
+    background-color: white;
+    }
+
 
     {
     nav #6B7A8F
     title & accents #F7C331
     hover & other accents #F7882F
+    #919cab
     }

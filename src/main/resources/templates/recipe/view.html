@@ -3,16 +3,12 @@
 <head th:replace="fragments :: head"></head>
 <body>
 
-<div th:replace="fragments :: navigation"></div>
-
 <div class="pageContent">
-    <h3>Recipe Details</h3>
-    <p th:text="${recipe.name}"></p>
+
+    <div th:replace="fragments :: navigation"></div>
+
     <p th:text="${recipe.description}"></p>
-    <h3>Categories</h3>
-    <div th:each="category : ${recipe.categories}">
-       <p th:text="${category.name}"></p>
-    </div>
+
     <h3>Ingredients</h3>
     <p th:each="ingredient : ${recipe.ingredients}">
             <span th:text="${ingredient.name}"></span>
@@ -25,6 +21,11 @@
             <p th:text="${direction.instruction}"></p>
         </li>
     </ol>
+
+    <h3>Categories</h3>
+    <div th:each="category : ${recipe.categories}">
+        <p th:text="${category.name}"></p>
+    </div>
 
     <!--<h3>Servings</h3>-->
     <a class="buttonLinks" th:href="@{'/recipe/edit/' + ${recipe.id}}">Edit Recipe</a>
