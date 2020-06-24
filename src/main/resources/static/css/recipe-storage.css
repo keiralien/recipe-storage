@@ -127,8 +127,6 @@ li a:hover {
     }
 
 .authentication {
-    display: inline-block;
-    float: left;
     }
 
 .authLabel {
@@ -184,7 +182,13 @@ li a:hover {
     }
 
 .register-login {
+    position: relative;
     padding: .25em 0em .25em 0em;
+    }
+
+.regLogButton {
+    position:
+    padding: 1em 0em .25em 0em;
     }
 
 .search {
@@ -194,8 +198,14 @@ li a:hover {
 
 #delete {
     position: relative;
-    top: 3em;
-    left: 20em;
+    }
+
+#deleteLinks {
+    padding: 1em .15em 1em .15em;
+    }
+
+#markRemoval {
+    position: relative;
     }
 
 #modifyCheck {

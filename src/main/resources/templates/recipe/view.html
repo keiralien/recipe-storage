@@ -28,10 +28,10 @@
     </div>
 
     <!--<h3>Servings</h3>-->
-    <a class="buttonLinks" th:href="@{'/recipe/edit/' + ${recipe.id}}">Edit Recipe</a>
+    <a class="buttonLinks" th:href="@{'/recipe/edit/' + ${recipe.id}}">Edit</a>
     <form method="post" action="delete" th:object="${recipe}" id="modifyCheck">
         <input type="hidden" th:value="*{id}" name="recipeId"/>
-        <input type="submit" value="Delete Recipe" name="Delete"/>
+        <input type="submit" value="Delete" name="Delete"/>
     </form>
 </div>
 

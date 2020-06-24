@@ -8,7 +8,7 @@
 
 <div class="pageContent">
     <form method="post" id="modifyCheck">
-        <label>Select one or more recipes for deletion:</label>
+        <h3>Select one or more recipes for deletion:</h3>
         <ul th:each="recipe : ${recipes}">
             <ol>
                 <input type="checkbox" name="recipeIds" th:value="${recipe.id}">

@@ -8,13 +8,14 @@
     <div th:replace="fragments :: navigation"></div>
 
     <h3>Random Recipe:</h3>
-    <a>recipe placeholder</a>
+    <a th:href="@{'/recipe/view/' + ${recipe.id}}" th:text="${recipe.name}"></a>
+    <p th:text="${recipe.description}"></p>
 
     <div>
         <h3>Browse by Category</h3>
         <ul>
             <li th:each="category : ${categories}">
-                <a th:text="${category.name}"></a>
+                <a th:href="@{'/recipe/browseByCategory/' + ${category.id}}" th:text="${category.name}"></a>
             </li>
         </ul>
     </div>

@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +95,7 @@ public class RecipeController {
         return ingredientNameList;
     }
 
-    private List<Double> generateAmounList() {
+    private List<Double> generateAmountList() {
         List<Double> ingredientAmountList = new ArrayList<>();
 
         for (int i = 0; i <= 15; i++) {
@@ -110,7 +109,7 @@ public class RecipeController {
     @GetMapping("/add")
     public String displayAddRecipe(Model model) {
         List<String> ingredientNameList = generateNameList();
-        List<Double> ingredientAmountList = generateAmounList();
+        List<Double> ingredientAmountList = generateAmountList();
 
         model.addAttribute("title", "Add Recipe");
         model.addAttribute("categories", categoryRepository.findAll());
@@ -190,12 +189,26 @@ public class RecipeController {
         return "/recipe/browse";
     }
 
-//  View a list of all recipes
+//  View a list of recipes
     @GetMapping("/browse")
     public String displayRecipeBrowse (Model model) {
         model.addAttribute("title", "My Recipes");
         model.addAttribute("recipes", recipeRepository.findAll());
         return "/recipe/browse";
+    }
+
+    @GetMapping("/browseByCategory/{categoryId}")
+    public String displayRecipeBrowseByCategory (@PathVariable int categoryId,
+                                       Model model) {
+        Optional<Category> optCategory = categoryRepository.findById(categoryId);
+        if (optCategory.isPresent()) {
+            Category category = (Category) optCategory.get();
+            model.addAttribute("title", category.getName());
+            model.addAttribute("recipes", recipeRepository.findByCategories_Id(categoryId));
+            return "recipe/browseByCategory/{categoryId}";
+        } else {
+            return "redirect:../";
+        }
     }
 
 //
@@ -226,7 +239,7 @@ public class RecipeController {
     @GetMapping("/edit/{recipeId}")
     public String displayRecipeEdit (@PathVariable int recipeId, Model model) {
         List<String> ingredientNameList = generateNameList();
-        List<Double> ingredientAmountList = generateAmounList();
+        List<Double> ingredientAmountList = generateAmountList();
 
         model.addAttribute("ingredientNameList", ingredientNameList);
         model.addAttribute("ingredientAmountList", ingredientAmountList);

@@ -5,6 +5,8 @@ import org.launchcode.recipestorage.models.Search;
 import org.launchcode.recipestorage.models.data.CategoryRepository;
 import org.launchcode.recipestorage.models.data.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,10 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -26,10 +24,17 @@ public class HomeController {
     @Autowired
     private CategoryRepository categoryRepository;
 
-//    public Recipe selectRandomRecipe () {
-//        List<Recipe> recipes = new ArrayList<>();
-//        recipeRepository.findAll().forEach(recipes.add());
-//    }
+
+    public Recipe randomRecipe() {
+        Long qty = recipeRepository.count();
+        int idx = (int)(Math.random() * qty);
+        Page<Recipe> recipePage = recipeRepository.findAll(PageRequest.of(idx, 1));
+        Recipe recipe = null;
+        if (recipePage.hasContent()) {
+            recipe = recipePage.getContent().get(0);
+        }
+        return recipe;
+    }
 
     /**
      * Pull the home page of recipe storage.
@@ -38,9 +43,10 @@ public class HomeController {
      * @return
      */
     @GetMapping
-    public String displaySearch(HttpSession session, Model model) {
+    public String displayHome(HttpSession session, Model model) {
         model.addAttribute("title", "Home");
         model.addAttribute("categories",categoryRepository.findAll());
+        model.addAttribute("recipe",randomRecipe());
         return "index";
     }
 
@@ -58,7 +64,6 @@ public class HomeController {
 
         Iterable<Recipe> recipes;
         recipes = Search.find(recipeRepository.findAll(), searchTerm);
-
         model.addAttribute("title", "Home");
         model.addAttribute("categories",categoryRepository.findAll());
         model.addAttribute("recipes", recipes);
